@@ -13,3 +13,5 @@ const pool = new Pool({
 });
 
 module.exports = pool;
+
+console.log("Conectado a la base: ", process.env.DB_DATABASE)
