@@ -6,7 +6,7 @@ const webRoutes = require('./routes/web.routes');
 // Para poder leer JSON en las peticiones
 app.use(express.json());
 
-// Conectar el router
+
 app.use('/api', apiRoutes); //siempre con prefijo api
 app.use('/', webRoutes);
 
