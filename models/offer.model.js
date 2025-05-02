@@ -7,6 +7,11 @@ const objectSchema = {
         required: true,
         unique: true, 
       },
+      title: {
+        type: String,
+        required: true,
+        maxlength: 100,
+      },
       company: {
         type: String,
         required: true,
