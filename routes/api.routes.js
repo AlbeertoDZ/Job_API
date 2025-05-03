@@ -10,8 +10,10 @@ router.post("/favorites/:id", favoritesController.addFavorite);
 // Eliminar de favoritos
 router.delete("/favorites/:id", favoritesController.removeFavorite);
 
-// Recuperar y restaurar constraseña
-router.get("/recoverpassword", authController.sendRecoveryEmail);
-router.get("/restorepassword", authController.restorePassword);
+// Recuperar contraseña
+router.post("/recoverpassword", authController.sendRecoveryEmail);
+
+// Cambiar contraseña
+router.post("/restorepassword", authController.restorePassword);
 
 module.exports = router;
