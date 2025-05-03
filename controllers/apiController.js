@@ -89,3 +89,14 @@ const sendRecoveryEmail = async (req, res) => {
     throw err;
   }
 };
+
+// Cambiar contraseña
+const changePassword = async (req, res) => {};
+
+module.exports = {
+  deleteAd,
+  addFavorite,
+  deleteFavorite,
+  sendRecoveryEmail,
+  changePassword,
+};
