@@ -1,3 +1,7 @@
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const User = require("../models/users.model");
+
 // Eliminar anuncio (admin)
 const deleteAd = async (req, res) => {
   const id = req.params.id;
@@ -91,7 +95,37 @@ const sendRecoveryEmail = async (req, res) => {
 };
 
 // Cambiar contraseña
-const changePassword = async (req, res) => {};
+const changePassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res.status(400).json({ message: "Faltan datos" });
+  }
+
+  if (newPassword.length < 8) {
+    return res
+      .status(400)
+      .json({ message: "La contraseña debe tener al menos 8 caracteres" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({ email: decoded.email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Contraseña actualizada con éxito" });
+  } catch (error) {
+    console.error("Error al cambiar la contraseña:", error.message);
+    res.status(500).json({ message: "Error al cambiar la contraseña" });
+  }
+};
 
 module.exports = {
   deleteAd,
