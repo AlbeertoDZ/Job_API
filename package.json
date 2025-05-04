@@ -12,6 +12,7 @@
     "author": "Alberto Diez",
     "license": "ISC",
     "dependencies": {
+        "bcrypt": "^5.1.1",
         "cowsay": "^1.6.0",
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
@@ -25,10 +26,10 @@
         "oauth": "^0.10.2",
         "passport": "^0.6.0",
         "passport-google-oauth20": "^2.0.0",
-        "playwright": "^1.52.0",
         "pg": "^8.15.6",
-        "puppeteer": "^24.7.2",
+        "playwright": "^1.52.0",
         "pug": "^3.0.3",
+        "puppeteer": "^24.7.2",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1"
     }
