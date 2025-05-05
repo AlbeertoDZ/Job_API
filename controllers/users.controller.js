@@ -28,16 +28,16 @@ const createUser = async (req, res) => {
       "user_image" in newUser
   )
       try {
-          const existingUser = await User.findOne({ email });
-          if (existingUser) {
-              return res.status(400).json({ message: 'El email ya está registrado' });
-          }
+          // Comprobar si el usuario ya existe ??
+
           const response = await User.createUser(newUser); // Crear el usuario en la base de datos
+          
           res.status(201).json({
               message: `Usuario creado: ${newUser.name}`,
               items_created: response,
               data: newUser
           });
+
       } catch (error) {
           res.status(500).json({ message: error.message });
       }
@@ -47,8 +47,10 @@ const createUser = async (req, res) => {
 };
 
 // [PUT] /api/user - Editar perfil
+
 const updateUser = async (req, res) => {
   const modifiedUser = req.body; // {user_name, name, surname, email, password, rol, image}
+
   if (
       "user_name" in modifiedUser &&
       "name" in modifiedUser &&
@@ -68,7 +70,6 @@ const updateUser = async (req, res) => {
           if (updates.password) {
               updates.password = await bcrypt.hash(updates.password, 10);
           }
-          
           const response = await User.updateUser(modifiedUser); // Actualizar el usuario en la base de datos
           res.status(200).json({
               items_updated: response,
@@ -80,22 +81,25 @@ const updateUser = async (req, res) => {
       }
 };
 
+
 // [DELETE] /api/user - Eliminar usuario (solo admin)
 const deleteUserAdmin = async (req, res) => {
+  const deleteUser = req.params.email; // {email}
   try {
+      //este if comprobar si va antes del try o dentro del try
       if (req.user.rol !== 'admin') {
           return res.status(403).json({ message: 'Acceso denegado' });
       }
-      const userId = req.params.id;
-      await User.findByIdAndDelete(userId); // Eliminar el usuario de la base de datos
+      const response = await User.deleteUserAdmin(deleteUser); // Eliminar el usuario en la base de datos
       res.status(200).json({
-          message: 'Usuario eliminado correctamente'
+          message: 'Usuario eliminado correctamente',
+          items_deleted: response,
+          data: deleteUser
       });
   } catch (error) {
       res.status(500).json({ message: error.message });
   }
 };
-
 // [POST] /api/login - Iniciar sesión
 const loginUsers = async (req, res) => {
   console.log(req.body.email);

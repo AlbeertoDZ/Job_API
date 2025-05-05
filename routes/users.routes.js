@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usersControllers = require("../controllers/users.controller")
+const authMiddleware = require("../middlewares/authMiddleware")
 
 //Vistas inicio web
 
