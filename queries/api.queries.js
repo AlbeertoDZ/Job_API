@@ -1,4 +1,3 @@
-
 const queries = {
     getUsers: `SELECT * 
     FROM persons`,

@@ -29,7 +29,9 @@
         "pg": "^8.15.6",
         "playwright": "^1.52.0",
         "pug": "^3.0.3",
-        "puppeteer": "^24.7.2",
+        "puppeteer": "^24.8.0",
+        "puppeteer-extra": "^3.3.6",
+        "puppeteer-extra-plugin-stealth": "^2.11.2",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1"
     }
