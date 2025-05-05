@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+
 const User = require("../models/users.model");
+const Ad = require("../models/offer.model");
+const Favorite = require("../models/favorite.model");
 
 // Eliminar anuncio (admin)
 const deleteAd = async (req, res) => {
@@ -50,21 +53,6 @@ const deleteFavorite = async (req, res) => {
 };
 
 // Recuperar constraseña
-// const restorePassword = async (req, res) => {
-//   try {
-//     const email = req.query.email;
-//     if (email) {
-//       let answer = await create Password(userId).save();
-//     }
-//     if (!result) {
-//       return res.status(404).send("Anuncio no encontrado");
-//     }
-
-//     res.status(200).send("Favorito eliminado! Has borrado: " + id);
-//   } catch (error) {
-//     res.status(500).send("Error al intentar borrar el favorito");
-//   }
-// };
 const sendRecoveryEmail = async (req, res) => {
   const email = req.body.email;
   if (!email) {
@@ -82,11 +70,12 @@ const sendRecoveryEmail = async (req, res) => {
       expiresIn: "15m",
     });
     const link = `${process.env.CLIENT_URL}/reset-password/${token}`;
-    await mail.send(passwordResetTemplate(user.toObject(), link));
+    // await mail.send(passwordResetTemplate(user.toObject(), link));
+    console.log("Reset link (stubbed):", link);
     res
       .status(200)
       .json(
-        "Las intstrucciones para recuperar tu contraseña fueron enviadas a tu email."
+        "Las instrucciones para recuperar tu contraseña fueron enviadas a tu email."
       );
   } catch (err) {
     console.log(err);
@@ -96,7 +85,7 @@ const sendRecoveryEmail = async (req, res) => {
 
 // Cambiar contraseña
 const changePassword = async (req, res) => {
-  const { token, newPassword } = req.body;
+  const { token, newPassword } = req.query;
 
   if (!token || !newPassword) {
     return res.status(400).json({ message: "Faltan datos" });

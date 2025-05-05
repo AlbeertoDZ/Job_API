@@ -1,22 +1,21 @@
+// routes/api.routes.js
 const express = require("express");
 const router = express.Router();
-const adsController = require("../controllers/apiController");
-const favoritesController = require("../controllers/apiController");
-const passwordController = require("../controllers/apiController");
+const apiController = require("../controllers/apiController");
 
 // Eliminar anuncio (admin)
-router.delete("/ads/:id", adsController.deleteAd);
+router.delete("/ads/:id", apiController.deleteAd);
 
 // Añadir a favoritos
-router.post("/favorites/:id", favoritesController.addFavorite);
+router.post("/favorites/:id", apiController.addFavorite);
 
 // Eliminar de favoritos
-router.delete("/favorites/:id", favoritesController.deleteFavorite);
+router.delete("/favorites/:id", apiController.deleteFavorite);
 
 // Recuperar contraseña
-router.post("/recoverpassword", passwordController.sendRecoveryEmail);
+router.get("/recoverpassword", apiController.sendRecoveryEmail);
 
 // Cambiar contraseña
-router.post("/restorepassword", passwordController.changePassword);
+router.get("/restorepassword", apiController.changePassword);
 
 module.exports = router;

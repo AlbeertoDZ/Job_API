@@ -12,9 +12,11 @@
     "author": "Alberto Diez",
     "license": "ISC",
     "dependencies": {
+        "bcrypt": "^5.1.1",
         "cowsay": "^1.6.0",
         "dotenv": "^16.4.5",
         "express": "^4.21.2",
+        "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.7.3",
         "passport": "^0.6.0",
         "passport-google-oauth20": "^2.0.0",
