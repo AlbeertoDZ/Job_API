@@ -1,7 +1,15 @@
+require('dotenv').config();// Cargar variables de entorno
+
 const express = require("express");
 const app = express();
+
+const mongoose = require("mongoose");
+
+
 const apiRoutes = require("./routes/api.routes");
-const webRoutes = require("./routes/web.routes");
+const userRoutes = require("./routes/users.routes");
+const adminRoutes = require("./routes/admin.routes");
+const offerRoutes = require("./routes/offer.routes");
 
 //Middleware Morgan
 const morgan = require("./middlewares/morgan");
@@ -13,7 +21,9 @@ app.use(express.static("public")); // Middleware para servir archivos estáticos
 app.use(express.json());
 
 app.use("/api", apiRoutes); //siempre con prefijo api
-app.use("/", webRoutes); //Rutas web
+app.use("/api", offerRoutes); //Rutas ofertas de trabajo
+app.use("/", userRoutes); //Rutas de usuarios
+app.use("/admin", adminRoutes); //Rutas de admin
 
 // Configuración de vistas PUG - Motor de plantillas
 app.set("view engine", "pug");

@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 require("../config/db_mongo")
 
 const objectSchema = {
-    id_offer: {
-        type: String,
-        required: true,
-        unique: true, 
-      },
       title: {
         type: String,
         required: true,
