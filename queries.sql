@@ -19,3 +19,7 @@ CREATE TABLE favorites (
     city VARCHAR(100),
     FOREIGN KEY (id_user) REFERENCES personas(id_user) ON DELETE CASCADE
 );
+
+--Añadir el campo title
+ALTER TABLE favorites
+ADD COLUMN title VARCHAR(200) NOT NULL;

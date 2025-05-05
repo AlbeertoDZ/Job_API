@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-//Vistas inicio web
+const webControllers = require("../controllers/web.controller")
+const authorizeRole = require("../middlewares/roleMiddleware")
+const checkAuth = require("../middlewares/authMiddleware")
 
-//GET http://localhost:3000/
+
+//GET Rutas públicas --> http://localhost:3000/
+
 router.get("/", (req, res) => {
     res.render("home");
 })
@@ -19,16 +23,17 @@ router.get("/signup", (req, res) => {
 })
 
 
-//Vistas de usuario o admin registrado
+//GET Rutas para usuario logueado
+//http://localhost:3000/favorites
+router.get("/favorites", checkAuth, webControllers.getFavoritesView)
 
-//GET http://localhost:3000/favorites
-router.get("/favorites", (req, res) => {
-    res.render("favorites");
-})
+//http://localhost:3000/profile
+router.get("/profile", checkAuth, webControllers.getProfileView)
 
-//GET http://localhost:3000/profile
-router.get("/profile", (req, res) => {
-    res.render("profile");
-})
+
+//GET Ruta solo para admin 
+// http://localhost:3000/admin/dashboard
+router.get("/admin/dashboard", checkAuth, authorizeRole("admin"), webControllers.getDashboardAdmin)
+
 
 module.exports = router;

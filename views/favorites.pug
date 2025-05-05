@@ -1,0 +1,26 @@
+html
+   head
+      title="Favorites"
+      link(rel="stylesheet", href="/css/style.css")
+   body
+    include ./menuFavorites
+    main
+        h1 Ofertas guardadas
+         each offer in favorites
+            .card
+               h2= offer.title
+               p
+                  strong Empresa:
+                  | #{offer.company}
+               p
+                  strong Ciudad:
+                  | #{offer.city}
+               p
+                  strong Salario:
+                  | #{offer.salary}
+               
+               form(method="DELETE", action=``)
+                  button(type="submit" class="btn-delete") Quitar de favoritos
+    include ./footer
+        
+   

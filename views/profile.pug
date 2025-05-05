@@ -1,0 +1,23 @@
+html
+   head
+      title="Profile"
+      link(rel="stylesheet", href="/css/style.css")
+   body
+    include ./menuProfile
+    main
+        h1 Mi perfil
+
+        .profile-container
+         img.profile-img(src=`${user.user_image || "/assets/default-profile-img.jpg"}`, alt="Foto de perfil")
+         p
+         strong Nombre:
+         | #{user.name} #{user.surname}
+         p
+         strong Nombre de usuario:
+         | #{user.user_name}
+         p
+         strong Correo electrónico:
+         | #{user.email}
+
+    include ./footer
+
