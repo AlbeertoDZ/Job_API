@@ -41,8 +41,9 @@ const createOffer = async (req, res) => {
   const description = req.body.description;
   const city = req.body.city;
   const salary = req.body.salary;
+  const url = req.body.url;
   // Validar que todos los campos estén presentes
-  if (!title || !company || !description || !city || !salary) {
+  if (!title || !company || !description || !city || !salary || !url) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
   try {
@@ -51,7 +52,8 @@ const createOffer = async (req, res) => {
       company,
       description,
       city,
-      salary
+      salary,
+      url
     });
     res.status(201).json({
       message: 'Oferta de empleo creada correctamente',
@@ -71,15 +73,16 @@ const editOffer = async (req, res) => {
   const description = req.body.description;
   const city = req.body.city;
   const salary = req.body.salary;
+  const url = req.body.url;
   // Validar campos
-  if (!company || !title || !description || !city || !salary) {
+  if (!company || !title || !description || !city || !salary || !url) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
   try {
     // Buscar y actualizar la oferta por su _id de MongoDB
     const ofertaActualizada = await Offer.findByIdAndUpdate(
       id,
-      { company, title, description, city, salary },
+      { company, title, description, city, salary, url },
       { new: true } // new: true devuelve el doc actualizado
     );
     if (!ofertaActualizada) {
