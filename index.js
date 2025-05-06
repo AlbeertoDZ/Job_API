@@ -1,8 +1,11 @@
-require('dotenv').config();// Cargar variables de entorno
-require("./config/db_mongo")
-
 const express = require("express");
 const app = express();
+
+require('dotenv').config();// Cargar variables de entorno
+
+const connectDB = require("./config/db_mongo"); // Conexión a MongoDB Atlas
+//Conectar a la base de datos de MongoDB Atlas
+connectDB(); 
 
 //const mongoose = require("mongoose");
 
