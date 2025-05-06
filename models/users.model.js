@@ -69,12 +69,21 @@ const deleteUserAdmin = async (email) => {
     return result
 }
 
+//GET 
+async function updatePasswordByEmail(email, hashedPassword) {
+    const { rowCount } = await pool.query(queries.restorePassword,[(hashedPassword, email)]
+    );
+    return rowCount;
+  }
+
 
 
 
 module.exports = {
     createUser,
     updateUser,
-    deleteUserAdmin
+    deleteUserAdmin,
+    //recoverPass,
+    updatePasswordByEmail
 }
 

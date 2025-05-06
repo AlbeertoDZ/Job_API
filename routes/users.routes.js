@@ -44,5 +44,8 @@ router.post("/logout", (req, res) => {
     res.redirect('/login');
   });
 
+//GET http://localhost:3000/api/restore-password
+router.get("/restorepassword", usersControllers.restorePassword);
+
 module.exports = router;
 

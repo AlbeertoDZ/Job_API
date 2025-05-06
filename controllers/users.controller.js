@@ -34,8 +34,12 @@ const createUser = async (req, res) => {
       "user_image" in newUser
   )
       try {
-          // Comprobar si el usuario ya existe ??
-
+          const existingUser = await User.existingUser(newUser.email); // Comprobar si el usuario ya existe en la base de datos
+          if (existingUser) { // Si el usuario ya existe, devolver un error
+              return res.status(409).json({ message: "El usuario ya existe" });
+          }
+          // Encriptar la contraseña  
+          newUser.user_password = await bcrypt.hash(newUser.user_password, 10); // Hashear la contraseña
           const response = await User.createUser(newUser); // Crear el usuario en la base de datos
           
           res.status(201).json({
@@ -140,6 +144,38 @@ const loginUsers = async (req, res) => {
 };
 
 
+// Cambiar contraseña
+const restorePassword = async (req, res) => {
+  const { token, newPassword } = req.query;
+  if (!token || !newPassword) {
+    return res
+      .status(400)
+      .json({ message: "Faltan datos (token o newPassword)" });
+  }
+  if (newPassword.length < 8) {
+    return res
+      .status(400)
+      .json({ message: "La contraseña debe tener al menos 8 caracteres" });
+  }
+  try {
+    // 1) Verificamos el JWT
+    const { email } = jwt.verify(token, process.env.JWT_SECRET);
+    // 2) Comprobamos que existe el usuario
+    const { rows } = await pool.query(queries.recoverPassword[email]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    // 3) Hasheamos y actualizamos
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await pool.query(queries.changePassword[(hashed, email)]);
+    return res
+      .status(200)
+      .json({ message: "Contraseña actualizada con éxito" });
+  } catch (err) {
+    console.error("Error en changePassword:", err);
+    return res.status(500).json({ message: "Error al cambiar la contraseña" });
+  }
+};
 
 
 module.exports = {
@@ -147,5 +183,7 @@ module.exports = {
     createUser,
     updateUser,
     deleteUserAdmin,
-    loginUsers
+    loginUsers,
+    //recoverPassword,
+    restorePassword
 };

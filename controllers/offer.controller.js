@@ -93,19 +93,22 @@ const editOffer = async (req, res) => {
       offer: ofertaActualizada
     });
   } catch (error) {
-    console.error('ERROR PUT /api/ads/:carné_de_identidad:', error.message);
+    console.error('ERROR:', error.message);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 };
 
-// Eliminar anuncio (admin) -------
+//DELETE http://localhost:3000/api/ads
 const deleteOffer = async (req, res) => {
   const id = req.params.id;
+  console.log("borro oferta con id:", id);
   try {
-    const result = await Offer.findByIdAndDelete(id);
-    if (!result) return res.status(404).send("Oferta no encontrada");
-    res.status(200).send("Oferta eliminada! Has borrado: " + id);
-  } catch (error) {
+    const deleted = await Offer.findByIdAndDelete(id);
+    console.log("resultado delete:", deleted);
+    if (!deleted) return res.status(404).send("Oferta no encontrada");
+    res.status(200).send("Oferta eliminada: " + id);
+  } catch (err) {
+    console.error(err);
     res.status(500).send("Error al intentar borrar la oferta");
   }
 };
