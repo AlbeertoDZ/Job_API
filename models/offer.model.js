@@ -35,3 +35,4 @@ const offerSchema = mongoose.Schema(objectSchema, {versionKey: false})
 const Offer = mongoose.model("Offer", offerSchema)
 
 module.exports = Offer;
+

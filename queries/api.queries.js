@@ -6,5 +6,17 @@ const queries = {
     updateUser: `UPDATE persons SET user_name = $1, name = $2, surname = $3, email = $4, user_password = $5, rol = $6, user_image = $7
     WHERE email = $8`,
     deleteUser: `DELETE FROM persons WHERE email = $1`,
+    createFavorite: `INSERT INTO favorites (id_user, id_offer)
+     VALUES ($1, $2)
+     RETURNING *`,
+    deleteFavorite: `
+     DELETE FROM favorites
+     WHERE id_favorite = $1`,
+    recoverPassword: `SELECT id_user, email
+       FROM public.persons
+      WHERE email = $1`,
+    restorePassword: `UPDATE public.persons
+        SET user_password = $1
+      WHERE email = $2`,
 }
 module.exports = queries;
