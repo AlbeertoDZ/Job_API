@@ -1,5 +1,6 @@
-const { Pool } = require('pg');
-require('dotenv').config();
+// config/db_sql.js
+require("dotenv").config();
+const { Pool } = require("pg");
 
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -7,11 +8,9 @@ const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  ssl: { rejectUnauthorized: false },
 });
 
-module.exports = pool;
+console.log("Conectado a la base:", process.env.DB_DATABASE);
 
-console.log("Conectado a la base: ", process.env.DB_DATABASE)
+module.exports = pool;

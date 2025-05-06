@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const User = require("../models/users.model");
 const Ad = require("../models/offer.model");
-const Favorite = require("../models/favorite.model");
+const { createFavorite, removeFavorite } = require("../models/favorite.model");
 
 // Eliminar anuncio (admin)
 const deleteAd = async (req, res) => {
@@ -60,7 +59,6 @@ const sendRecoveryEmail = async (req, res) => {
       [email]
     );
     if (rows.length === 0) {
-      // para no filtrar si existe o no
       return res
         .status(200)
         .send("Si el email existe, te enviaremos un enlace.");

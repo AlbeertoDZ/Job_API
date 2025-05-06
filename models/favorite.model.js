@@ -1,23 +1,24 @@
 // models/favorite.js
-const pool = require("../config/db_sql");
+const pool = require("../config/db_pgsql");
 
-// Inserta favorito y devuelve el registro completo
+// Inserta favorito
+// models/favorite.model.js
 async function createFavorite(userId, adId) {
-  const text = `
-    INSERT INTO favorites (user_id, ad_id)
-    VALUES ($1, $2)
-    RETURNING *
-  `;
-  const values = [userId, adId];
-  const { rows } = await pool.query(text, values);
+  const { rows } = await pool.query(
+    `INSERT INTO favorites (id_user, id_offer)
+     VALUES ($1, $2)
+     RETURNING *`,
+    [userId, adId]
+  );
   return rows[0];
 }
 
-// Borra favorito por su id, devuelve rowCount
+// Eliminar favorito
 async function removeFavorite(id) {
   const text = `DELETE FROM favorites WHERE id = $1`;
-  const { rowCount } = await pool.query(text, [id]);
-  return rowCount;
+  const values = [id];
+  const result = await pool.query(text, values);
+  return result.rowCount;
 }
 
 module.exports = {
