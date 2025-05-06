@@ -3,6 +3,11 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const Ad = require("../models/offer.model");
+const {
+  getUserByEmail,
+  updatePasswordByEmail,
+} = require("../models/users.model");
+
 const { createFavorite, removeFavorite } = require("../models/favorite.model");
 
 // Eliminar anuncio (admin)
@@ -58,22 +63,13 @@ const sendRecoveryEmail = async (req, res) => {
   }
 
   try {
-    // Usamos la tabla persons y su PK id_user
-    const { rows } = await pool.query(
-      `SELECT id_user, email
-         FROM public.persons
-        WHERE email = $1`,
-      [email]
-    );
-
-    if (rows.length === 0) {
-      // Nunca reveles si existe o no el email
+    const user = await getUserByEmail(email);
+    if (!user) {
       return res
         .status(200)
         .send("Si el email existe, te enviaremos un enlace.");
     }
 
-    // Genera token y envía email...
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "15m",
     });
@@ -92,10 +88,9 @@ const sendRecoveryEmail = async (req, res) => {
 };
 
 // Cambiar contraseña
-
+// controllers/apiController.js
 const changePassword = async (req, res) => {
   const { token, newPassword } = req.query;
-
   if (!token || !newPassword) {
     return res
       .status(400)
@@ -111,11 +106,9 @@ const changePassword = async (req, res) => {
     // 1) Verificamos el JWT
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
 
-    // 2) Comprobamos que existe el usuario en persons
+    // 2) Comprobamos que existe el usuario
     const { rows } = await pool.query(
-      `SELECT id_user
-         FROM persons
-        WHERE email = $1`,
+      `SELECT id_user FROM persons WHERE email = $1`,
       [email]
     );
     if (rows.length === 0) {
@@ -124,13 +117,12 @@ const changePassword = async (req, res) => {
 
     // 3) Hasheamos y actualizamos
     const hashed = await bcrypt.hash(newPassword, 10);
-    await pool.query(
-      `UPDATE persons
-          SET user_password = $1
-        WHERE email = $2`,
-      [hashed, email]
-    );
+    await pool.query(`UPDATE persons SET user_password = $1 WHERE email = $2`, [
+      hashed,
+      email,
+    ]);
 
+    // ** ¡Aquí faltaba la respuesta! **
     return res
       .status(200)
       .json({ message: "Contraseña actualizada con éxito" });
@@ -138,11 +130,6 @@ const changePassword = async (req, res) => {
     console.error("Error en changePassword:", err);
     return res.status(500).json({ message: "Error al cambiar la contraseña" });
   }
-};
-
-module.exports = {
-  // …otros controladores…
-  changePassword,
 };
 
 module.exports = {
