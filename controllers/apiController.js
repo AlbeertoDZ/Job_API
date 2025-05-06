@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const Ad = require("../models/offer.model");
 const { getUserByEmail } = require("../models/users.model");
 const { createFavorite, removeFavorite } = require("../models/favorite.model");
+const { queries } = require("../queries/api.queries");
 
 // Eliminar anuncio (admin)
 const deleteAd = async (req, res) => {
@@ -35,10 +36,8 @@ const addFavorite = async (req, res) => {
   }
 };
 
-// Eliminar favorito
 const deleteFavorite = async (req, res) => {
   const id = req.params.id;
-
   try {
     const deletedCount = await removeFavorite(id);
     if (deletedCount === 0) {
@@ -47,7 +46,7 @@ const deleteFavorite = async (req, res) => {
     res.status(200).send("Favorito eliminado! Has borrado: " + id);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error al intentar borrar el favorito");
+    res.status(500).json({ message: "Error al intentar borrar el favorito" });
   }
 };
 

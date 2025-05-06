@@ -2,15 +2,7 @@
 const pool = require("../config/db_pgsql");
 const { queries } = require("../queries/api.queries");
 
-// Inserta favorito
-// models/favorite.model.js
-// async function createFavorite(userId, adId) {
-//   const { rows } = await pool.query(queries.createFavorites[(userId, adId)]);
-//   return rows[0];
-// }
-
 // Crear favorito
-
 async function createFavorite(userId, adId) {
   const client = await pool.connect();
   try {
@@ -21,11 +13,18 @@ async function createFavorite(userId, adId) {
   }
 }
 
-// Eliminar favorito
-async function removeFavorite(id) {
-  const { rowCount } = await pool.query(queries.deleteFavorite[id]);
-  return rowCount;
-}
+// Crear favorito
+const removeFavorite = async (id) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(queries.deleteFavorite, [id]);
+    return result.rowCount;
+  } catch (err) {
+    throw err;
+  } finally {
+    client.release();
+  }
+};
 
 const getUsersAdmin = async () => {
   let client, result;
