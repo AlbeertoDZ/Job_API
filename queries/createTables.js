@@ -18,8 +18,6 @@ const createTables = async () => {
         id_favorite SERIAL PRIMARY KEY,
         id_user INTEGER NOT NULL,
         id_offer VARCHAR(100) NOT NULL,
-        category VARCHAR(100),
-        city VARCHAR(100),
         FOREIGN KEY (id_user) REFERENCES persons(id_user) ON DELETE CASCADE
       );
     `);

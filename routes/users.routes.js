@@ -21,7 +21,8 @@ router.get("/signup", (req, res) => {
 })
 
 //GET http://localhost:3000/profile
-router.get("/profile", authMiddleware, usersControllers.getProfileView)
+router.get("/profile", usersControllers.getProfileView)
+//router.get("/profile", authMiddleware, usersControllers.getProfileView)
 
 //API REST
 

@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const favoritesControllers = require("../controllers/favorites.controller")
+const favoritesControllers = require("../controllers/favorite.controller")
 
 
 //GET http://localhost:3000/favorites
-router.get("/favorites", authMiddleware, favoritesControllers.getFavoritesView)
+router.get("/", favoritesControllers.getFavoritesView)
+//router.get("/", authMiddleware, favoritesControllers.getFavoritesView)
 
 //POST http://localhost:3000/api/favorites
 

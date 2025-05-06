@@ -5,15 +5,21 @@ const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
 
 //Controlador para la vista de profile
 const getProfileView = async (req, res) => {
-    try {
-      const userName = req.session.user.user_name;
-      const result = await db.query("SELECT * FROM persons WHERE user_name = $1", [userName]);
-      res.render("profile", { user: result.rows[0] });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Error al cargar perfil");
+  try {
+    const userId = 1; //Ponemos id = 1 para las pruebas, en el futuro será req.user.id
+    const result = await db.query("SELECT id_user, user_name, name, surname, email, rol, user_image FROM persons WHERE id_user = $1", [userId])
+
+    if(result.rows.lenght === 0){
+      return res.status(404).json({ message: "Usuario no encontrado"})
     }
-  };
+
+    const user = result.rows[0]
+    res.status(200).json({ message: "Perfil encontrado con éxito", data: user})
+  } catch (err){
+    console.error("Error al obtener el perfil", err);
+    res.status(500).json({ message: "Error en el servidor"})
+  }
+}
 
 // [POST] /api/user - Registrar usuario // Revisar metodo mongo en existingUser
 const createUser = async (req, res) => {
@@ -47,7 +53,6 @@ const createUser = async (req, res) => {
 };
 
 // [PUT] /api/user - Editar perfil
-
 const updateUser = async (req, res) => {
   const modifiedUser = req.body; // {user_name, name, surname, email, password, rol, image}
 
@@ -80,7 +85,6 @@ const updateUser = async (req, res) => {
           res.status(500).json({ message: error.message });
       }
 };
-
 
 // [DELETE] /api/user - Eliminar usuario (solo admin)
 const deleteUserAdmin = async (req, res) => {
