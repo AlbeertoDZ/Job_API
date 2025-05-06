@@ -3,11 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const Ad = require("../models/offer.model");
-const {
-  getUserByEmail,
-  updatePasswordByEmail,
-} = require("../models/users.model");
-
+const { getUserByEmail } = require("../models/users.model");
 const { createFavorite, removeFavorite } = require("../models/favorite.model");
 
 // Eliminar anuncio (admin)
@@ -88,7 +84,6 @@ const sendRecoveryEmail = async (req, res) => {
 };
 
 // Cambiar contraseña
-// controllers/apiController.js
 const changePassword = async (req, res) => {
   const { token, newPassword } = req.query;
   if (!token || !newPassword) {
@@ -122,7 +117,6 @@ const changePassword = async (req, res) => {
       email,
     ]);
 
-    // ** ¡Aquí faltaba la respuesta! **
     return res
       .status(200)
       .json({ message: "Contraseña actualizada con éxito" });
