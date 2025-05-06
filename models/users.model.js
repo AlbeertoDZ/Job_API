@@ -1,21 +1,14 @@
 const pool = require("../config/db_pgsql");
+const { queries } = require("../queries/api.queries");
 
 async function getUserByEmail(email) {
-  const { rows } = await pool.query(
-    `SELECT id_user, email
-       FROM public.persons
-      WHERE email = $1`,
-    [email]
-  );
+  const { rows } = await pool.query(queries.recoverPassword[email]);
   return rows[0] || null;
 }
 
 async function updatePasswordByEmail(email, hashedPassword) {
   const { rowCount } = await pool.query(
-    `UPDATE public.persons
-        SET user_password = $1
-      WHERE email = $2`,
-    [hashedPassword, email]
+    queries.changePassword[(hashedPassword, email)]
   );
   return rowCount;
 }

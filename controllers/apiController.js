@@ -24,7 +24,7 @@ const deleteAd = async (req, res) => {
 // Añadir a favoritos
 const addFavorite = async (req, res) => {
   const adId = req.params.id;
-  const { userId } = req.body;
+  const userId = req.body.userId;
 
   try {
     const favorite = await createFavorite(userId, adId);
@@ -70,7 +70,7 @@ const sendRecoveryEmail = async (req, res) => {
       expiresIn: "15m",
     });
     const link = `${process.env.CLIENT_URL}/reset-password/${token}`;
-    console.log("Reset link (stubbed):", link);
+    console.log("Reset link:", link);
 
     return res
       .status(200)
@@ -102,20 +102,14 @@ const changePassword = async (req, res) => {
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
 
     // 2) Comprobamos que existe el usuario
-    const { rows } = await pool.query(
-      `SELECT id_user FROM persons WHERE email = $1`,
-      [email]
-    );
+    const { rows } = await pool.query(queries.recoverPassword[email]);
     if (rows.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     // 3) Hasheamos y actualizamos
     const hashed = await bcrypt.hash(newPassword, 10);
-    await pool.query(`UPDATE persons SET user_password = $1 WHERE email = $2`, [
-      hashed,
-      email,
-    ]);
+    await pool.query(queries.changePassword[(hashed, email)]);
 
     return res
       .status(200)
