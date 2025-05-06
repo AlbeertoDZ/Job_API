@@ -1,11 +1,11 @@
-// models/favorite.model.js
-module.exports = {
-  // Para addFavorite
-  create: async ({ userId, adId }) => {
-    return { _id: "fakeFavId", userId, adId, createdAt: new Date() };
+const mongoose = require("mongoose");
+
+const favoriteSchema = new mongoose.Schema(
+  {
+    userId: { type: mongoose.Types.ObjectId, ref: "User", required: true },
+    adId: { type: mongoose.Types.ObjectId, ref: "Ad", required: true },
   },
-  // Para deleteFavorite
-  findByIdAndDelete: async (id) => {
-    return { _id: id };
-  },
-};
+  { versionKey: false, timestamps: true }
+);
+
+module.exports = mongoose.model("Favorite", favoriteSchema);

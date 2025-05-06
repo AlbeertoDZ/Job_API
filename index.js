@@ -1,4 +1,5 @@
 require("dotenv").config();
+require("./config/db_mongo");
 const express = require("express");
 const app = express();
 const apiRoutes = require("./routes/api.routes");

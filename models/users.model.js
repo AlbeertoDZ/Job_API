@@ -1,17 +1,13 @@
-// models/users.model.js
-module.exports = {
-  // Para sendRecoveryEmail y changePassword
-  findOne: async (query) => {
-    // Simula que solo existe este usuario de test
-    if (query.email === "test@correo.com") {
-      return {
-        email: query.email,
-        password: "hashFalso",
-        recoveryToken: null,
-        recoveryExpires: null,
-        save: async () => {},
-      };
-    }
-    return null;
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    recoveryToken: { type: String, default: null },
+    recoveryExpires: { type: Date, default: null },
   },
-};
+  { versionKey: false, timestamps: true }
+);
+
+module.exports = mongoose.model("User", userSchema);
