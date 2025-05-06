@@ -92,10 +92,14 @@ const sendRecoveryEmail = async (req, res) => {
 };
 
 // Cambiar contraseña
+
 const changePassword = async (req, res) => {
   const { token, newPassword } = req.query;
+
   if (!token || !newPassword) {
-    return res.status(400).json({ message: "Faltan datos" });
+    return res
+      .status(400)
+      .json({ message: "Faltan datos (token o newPassword)" });
   }
   if (newPassword.length < 8) {
     return res
@@ -104,25 +108,41 @@ const changePassword = async (req, res) => {
   }
 
   try {
+    // 1) Verificamos el JWT
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
-    const { rows } = await pool.query(`SELECT id FROM users WHERE email = $1`, [
-      email,
-    ]);
+
+    // 2) Comprobamos que existe el usuario en persons
+    const { rows } = await pool.query(
+      `SELECT id_user
+         FROM persons
+        WHERE email = $1`,
+      [email]
+    );
     if (rows.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
+    // 3) Hasheamos y actualizamos
     const hashed = await bcrypt.hash(newPassword, 10);
-    await pool.query(`UPDATE users SET password = $1 WHERE email = $2`, [
-      hashed,
-      email,
-    ]);
+    await pool.query(
+      `UPDATE persons
+          SET user_password = $1
+        WHERE email = $2`,
+      [hashed, email]
+    );
 
-    res.status(200).json({ message: "Contraseña actualizada con éxito" });
+    return res
+      .status(200)
+      .json({ message: "Contraseña actualizada con éxito" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error al cambiar la contraseña" });
+    console.error("Error en changePassword:", err);
+    return res.status(500).json({ message: "Error al cambiar la contraseña" });
   }
+};
+
+module.exports = {
+  // …otros controladores…
+  changePassword,
 };
 
 module.exports = {

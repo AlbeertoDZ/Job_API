@@ -15,6 +15,6 @@ router.delete("/favorites/:id", apiController.deleteFavorite);
 router.get("/recoverpassword", apiController.sendRecoveryEmail);
 
 // Cambiar contraseña
-router.post("/restorepassword", apiController.changePassword);
+router.get("/restorepassword", apiController.changePassword);
 
 module.exports = router;
