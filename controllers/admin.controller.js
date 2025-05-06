@@ -1,28 +1,23 @@
 const db = require("../config/db_pgsql");
 const Offer = require("../models/offer.model")
 const User = require("../models/users.model")
+const Admin = require("../models/admin.model")
 
 // [GET] /users - Lista de usuarios (solo admin) //MIRAR LINEA 10
 const getUsersAdmin = async (req, res) => {
     try {
-        const userRol = "admin"
-        if (userRol !== "admin"){
-            return res.status(403).json({ message: "Acceso denegado"})
-        }
-        /* if (req.user.rol !== 'admin') {
-            return res.status(403).json({ message: 'Acceso denegado' });
-        } */
-        const users = await User.getUsersAdmin(); 
-        // Mirar parametro de base de datos (entre parentesis no quiero traer el campo password, cambiar query??)
-        res.status(200).json(users);
-    } catch (error) {
-        console.error("Error al obtener los usuarios: ", error)
-        res.status(500).json({ message: "Error en la BBDD" });
+        const users = await Admin.getUsersAdmin();
+        res.status(200).json({
+            message: "Usuarios cargados correctamente",
+            data: users
+        });
+    } catch (err){
+        console.error("Error al crgar los usuarios: ", err)
+        res.status(500).json({ message: "Error en el servidor" })
     }
-};
+}
 
 //[GET] /dashboard - Vista del admin para crear y visualizar sus anuncios
-
 const getDashboardView = async (req, res) => {
     try {
         const userId = 1 //Ponemos 1 para las pruebas, en el futuro irá: req.user?.id

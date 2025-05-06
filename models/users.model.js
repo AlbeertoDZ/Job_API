@@ -1,6 +1,9 @@
 const pool = require('../config/db_pgsql'); // Configuracion de la BBDD
 const queries = require('../queries/api.queries'); // Consultas SQL
 
+
+
+//POST
 const createUser = async (user) => {
     const { user_name, name, surname, email, user_password, rol, user_image } = user; // Desestructuración del objeto
     let client, result;
