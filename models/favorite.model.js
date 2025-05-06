@@ -15,10 +15,14 @@ async function createFavorite(userId, adId) {
 
 // Eliminar favorito
 async function removeFavorite(id) {
-  const text = `DELETE FROM favorites WHERE id = $1`;
-  const values = [id];
-  const result = await pool.query(text, values);
-  return result.rowCount;
+  const { rowCount } = await pool.query(
+    `
+    DELETE FROM favorites
+    WHERE id_favorite = $1
+    `,
+    [id]
+  );
+  return rowCount;
 }
 
 module.exports = {
