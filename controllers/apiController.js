@@ -1,3 +1,4 @@
+const pool = require("../config/db_pgsql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -7,11 +8,14 @@ const { createFavorite, removeFavorite } = require("../models/favorite.model");
 // Eliminar anuncio (admin)
 const deleteAd = async (req, res) => {
   const id = req.params.id;
+  console.log("borro oferta con _id:", id);
   try {
-    const result = await Ad.findByIdAndDelete(id);
-    if (!result) return res.status(404).send("Oferta no encontrada");
-    res.status(200).send("Oferta eliminada! Has borrado: " + id);
-  } catch (error) {
+    const deleted = await Ad.findByIdAndDelete(id);
+    console.log("resultado delete:", deleted);
+    if (!deleted) return res.status(404).send("Oferta no encontrada");
+    res.status(200).send("Oferta eliminada: " + id);
+  } catch (err) {
+    console.error(err);
     res.status(500).send("Error al intentar borrar la oferta");
   }
 };
@@ -48,37 +52,42 @@ const deleteFavorite = async (req, res) => {
 
 // Recuperar constraseña
 const sendRecoveryEmail = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.query;
   if (!email) {
     return res.status(400).json({ message: "El email es requerido" });
   }
 
   try {
+    // Usamos la tabla persons y su PK id_user
     const { rows } = await pool.query(
-      `SELECT id, email FROM users WHERE email = $1`,
+      `SELECT id_user, email
+         FROM public.persons
+        WHERE email = $1`,
       [email]
     );
+
     if (rows.length === 0) {
+      // Nunca reveles si existe o no el email
       return res
         .status(200)
         .send("Si el email existe, te enviaremos un enlace.");
     }
 
+    // Genera token y envía email...
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "15m",
     });
     const link = `${process.env.CLIENT_URL}/reset-password/${token}`;
-
     console.log("Reset link (stubbed):", link);
 
-    res
+    return res
       .status(200)
       .json(
         "Las instrucciones para recuperar tu contraseña fueron enviadas a tu email."
       );
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Error interno" });
+    return res.status(500).json({ message: "Error interno" });
   }
 };
 
