@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 // Conexión a la base de datos MongoDB
 mongoose.connect("mongodb://localhost:27017/jobin-app")
   .then(() => console.log("Now connected to MongoDB!"))

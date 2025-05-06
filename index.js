@@ -1,7 +1,12 @@
+require('dotenv').config();// Cargar variables de entorno
+
 const express = require('express');
 const app = express();
+
 const apiRoutes = require('./routes/api.routes');
 const webRoutes = require('./routes/web.routes');
+
+require('./config/db_mongo'); 
 
 // Para poder leer JSON en las peticiones
 app.use(express.json());
@@ -9,6 +14,10 @@ app.use(express.json());
 
 app.use('/api', apiRoutes); //siempre con prefijo api
 app.use('/', webRoutes);
+
+
+
+
 
 
 
