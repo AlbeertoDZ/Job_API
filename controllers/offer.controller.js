@@ -90,7 +90,7 @@ const editOffer = async (req, res) => {
       offer: ofertaActualizada
     });
   } catch (error) {
-    console.error('ERROR PUT /api/ads/:carné_de_identidad:', error.message);
+    console.error('ERROR:', error.message);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 };
