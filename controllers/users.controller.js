@@ -34,10 +34,6 @@ const createUser = async (req, res) => {
       "user_image" in newUser
   )
       try {
-          const existingUser = await User.existingUser(newUser.email); // Comprobar si el usuario ya existe en la base de datos
-          if (existingUser) { // Si el usuario ya existe, devolver un error
-              return res.status(409).json({ message: "El usuario ya existe" });
-          }
           // Encriptar la contraseña  
           newUser.user_password = await bcrypt.hash(newUser.user_password, 10); // Hashear la contraseña
           const response = await User.createUser(newUser); // Crear el usuario en la base de datos
@@ -71,10 +67,7 @@ const updateUser = async (req, res) => {
       "old_email" in modifiedUser
   )
       try {
-          // este if comprobar si va antes del try o dentro del try
-          if (req.user.rol !== 'admin') {
-              return res.status(403).json({ message: 'No puedes cambiar tu rol' });
-          }
+          
           // Si se actualiza la contraseña, hashearla (???)
           if (updates.password) {
               updates.password = await bcrypt.hash(updates.password, 10);
@@ -108,6 +101,7 @@ const deleteUserAdmin = async (req, res) => {
       res.status(500).json({ message: error.message });
   }
 };
+
 // [POST] /api/login - Iniciar sesión
 const loginUsers = async (req, res) => {
   console.log(req.body.email);

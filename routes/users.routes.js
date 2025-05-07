@@ -26,22 +26,23 @@ router.get("/profile", usersControllers.getProfileView)
 
 //API REST
 
-//POST --> Registrarse en la app
+//POST --> Registrarse en la app http://localhost:3000/api/user
 router.post('/api/user', usersControllers.createUser);
 
-//PUT --> Editar datos del perfil del usuario o admin
+//PUT --> Editar datos del perfil del usuario o admin http://localhost:3000/api/user
 router.put('/api/user', usersControllers.updateUser);
 
-//DELETE --> Borrar usuario de la BBDD (admin)
+//DELETE --> Borrar usuario de la BBDD (admin) http://localhost:3000/api/user
 router.delete('/api/user', usersControllers.deleteUserAdmin)
 
 //POST http://localhost:3000/api/login
 router.post("/login", usersControllers.loginUsers);
 
-//GET Recuperar contraseña
+//GET Recuperar contraseña http://localhost:3000/recoverpassword
 router.get("/recoverpassword", usersControllers.recoverPassword);
-//GET Cambiar contraseña
-router.get("/reset-password", usersControllers.changePassword);
+
+//GET Cambiar contraseña http://localhost:3000/restorepassword
+router.get("/restorepassword", usersControllers.changePassword);
 
 
 //POST http://localhost:3000/api/logout
