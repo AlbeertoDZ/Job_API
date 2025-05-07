@@ -32,7 +32,7 @@ const getFavoritesView = async (req, res) => {
 };
 
 
-// Añadir a favoritos
+// Añadir a favoritos 
 const addFavorite = async (req, res) => {
   const adId = req.params.id;
   const userId = req.body.userId;
