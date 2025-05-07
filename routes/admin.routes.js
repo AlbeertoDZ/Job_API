@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const adminControllers = require("../controllers/admin.controller")
+const authMiddleware = require("../middlewares/authMiddleware")
+const isAdminMiddleware = require("../middlewares/admin")
 
 //GET --> http://localhost:3000/users
-router.get('/users', adminControllers.getUsersAdmin);
+router.get('/users', authMiddleware, isAdminMiddleware,adminControllers.getUsersAdmin);
 //router.get('/users', authMiddleware, adminControllers.getUsersAdmin)
 
 

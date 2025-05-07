@@ -1,5 +1,5 @@
 const db = require("../config/db_pgsql");
-const User = require("../models/users.model"); // Modelo de usuario
+const User= require("../models/users.model"); // Modelo de usuario
 const bcrypt = require("bcrypt"); // Librería para encriptar contraseñas
 const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
 
@@ -9,15 +9,15 @@ const getProfileView = async (req, res) => {
     const userId = 1; //Ponemos id = 1 para las pruebas, en el futuro será req.user.id
     const result = await db.query("SELECT id_user, user_name, name, surname, email, rol, user_image FROM persons WHERE id_user = $1", [userId])
 
-    if(result.rows.lenght === 0){
-      return res.status(404).json({ message: "Usuario no encontrado"})
+    if (result.rows.lenght === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" })
     }
 
     const user = result.rows[0]
-    res.status(200).json({ message: "Perfil encontrado con éxito", data: user})
-  } catch (err){
+    res.status(200).json({ message: "Perfil encontrado con éxito", data: user })
+  } catch (err) {
     console.error("Error al obtener el perfil", err);
-    res.status(500).json({ message: "Error en el servidor"})
+    res.status(500).json({ message: "Error en el servidor" })
   }
 }
 
@@ -25,89 +25,85 @@ const getProfileView = async (req, res) => {
 const createUser = async (req, res) => {
   const newUser = req.body; // {user_name, name, surname, email, user_password, rol, user_image}
   if (
-      "user_name" in newUser &&
-      "name" in newUser &&
-      "surname" in newUser &&
-      "email" in newUser &&
-      "user_password" in newUser &&
-      "rol" in newUser &&
-      "user_image" in newUser
+    "user_name" in newUser &&
+    "name" in newUser &&
+    "surname" in newUser &&
+    "email" in newUser &&
+    "user_password" in newUser &&
+    "rol" in newUser &&
+    "user_image" in newUser
   )
-      try {
-          const existingUser = await User.existingUser(newUser.email); // Comprobar si el usuario ya existe en la base de datos
-          if (existingUser) { // Si el usuario ya existe, devolver un error
-              return res.status(409).json({ message: "El usuario ya existe" });
-          }
-          // Encriptar la contraseña  
-          newUser.user_password = await bcrypt.hash(newUser.user_password, 10); // Hashear la contraseña
-          const response = await User.createUser(newUser); // Crear el usuario en la base de datos
-          
-          res.status(201).json({
-              message: `Usuario creado: ${newUser.name}`,
-              items_created: response,
-              data: newUser
-          });
+    try {
 
-      } catch (error) {
-          res.status(500).json({ message: error.message });
-      }
+      // Encriptar la contraseña  
+      newUser.user_password = await bcrypt.hash(newUser.user_password, 10); // Hashear la contraseña
+      const response = await User.createUser(newUser); // Crear el usuario en la base de datos
+
+      res.status(201).json({
+        message: `Usuario creado: ${newUser.name}`,
+        items_created: response,
+        data: newUser
+      });
+
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   else {
-      res.status(400).json({ message: "Faltan campos en la entrada" });
+    res.status(400).json({ message: "Faltan campos en la entrada" });
   }
 };
+
 
 // [PUT] /api/user - Editar perfil
 const updateUser = async (req, res) => {
   const modifiedUser = req.body; // {user_name, name, surname, email, password, rol, image}
 
   if (
-      "user_name" in modifiedUser &&
-      "name" in modifiedUser &&
-      "surname" in modifiedUser &&
-      "email" in modifiedUser &&
-      "password" in modifiedUser &&
-      "rol" in modifiedUser &&
-      "image" in modifiedUser &&
-      "old_email" in modifiedUser
+    "user_name" in modifiedUser &&
+    "name" in modifiedUser &&
+    "surname" in modifiedUser &&
+    "email" in modifiedUser &&
+    "user_password" in modifiedUser &&
+    "rol" in modifiedUser &&
+    "user_image" in modifiedUser &&
+    "old_email" in modifiedUser
   )
-      try {
-          // este if comprobar si va antes del try o dentro del try
-          if (req.user.rol !== 'admin') {
-              return res.status(403).json({ message: 'No puedes cambiar tu rol' });
-          }
-          // Si se actualiza la contraseña, hashearla (???)
-          if (updates.password) {
-              updates.password = await bcrypt.hash(updates.password, 10);
-          }
-          const response = await User.updateUser(modifiedUser); // Actualizar el usuario en la base de datos
-          res.status(200).json({
-              items_updated: response,
-              message: 'Usuario actualizado correctamente',
-              data: modifiedUser
-          });
-      } catch (error) {
-          res.status(500).json({ message: error.message });
-      }
+    try {
+      const response = await User.updateUser(modifiedUser); // Actualizar el usuario en la base de datos
+      res.status(200).json({
+        items_updated: response,
+        message: 'Usuario actualizado correctamente',
+        data: modifiedUser
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
 };
+
+
+
 
 // [DELETE] /api/user - Eliminar usuario (solo admin)
 const deleteUserAdmin = async (req, res) => {
-  const deleteUser = req.params.email; // {email}
+  const {email} = req.params; // {email}
+  
   try {
-      //este if comprobar si va antes del try o dentro del try
-      if (req.user.rol !== 'admin') {
-          return res.status(403).json({ message: 'Acceso denegado' });
-      }
-      const response = await User.deleteUserAdmin(deleteUser); // Eliminar el usuario en la base de datos
-      res.status(200).json({
-          message: 'Usuario eliminado correctamente',
-          items_deleted: response,
-          data: deleteUser
-      });
+    //este if comprobar si va antes del try o dentro del try
+
+    const response = await User.deleteUserAdmin(email); // Eliminar el usuario en la base de datos
+    if (response) {
+    res.status(200).json({
+      message: 'Usuario eliminado correctamente',
+      items_deleted: response,
+      data: email
+    })} else {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+    }
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+
 // [POST] /api/login - Iniciar sesión
 const loginUsers = async (req, res) => {
   console.log(req.body.email);
@@ -115,11 +111,13 @@ const loginUsers = async (req, res) => {
   try {
     const dataEmail = req.body.email;
     const dataPass = req.body.password;
-    const result = await pool.query(`SELECT * FROM persons WHERE email = '${dataEmail}'`);
+    const result = await db.query(`SELECT * FROM persons WHERE email = '${dataEmail}'`);
     if (result.rows.length === 0) { //rows devuelve un array, si no hay resultados, la longitud es 0
       return res.status(401).json({ message: 'Usuario no encontrado' });
     }
     const person = result.rows[0];//guardamos el primer resultado del array
+    console.log(person);
+    
     const truePass = await bcrypt.compare(dataPass, person.password);
     if (!truePass) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
@@ -211,12 +209,12 @@ const changePassword = async (req, res) => {
 
 
 module.exports = {
-    getProfileView,
-    createUser,
-    updateUser,
-    deleteUserAdmin,
-    loginUsers,
-    recoverPassword,
-    changePassword
-    
+  getProfileView,
+  createUser,
+  updateUser,
+  deleteUserAdmin,
+  loginUsers,
+  recoverPassword,
+  changePassword
+
 };
