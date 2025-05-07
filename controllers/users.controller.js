@@ -6,18 +6,22 @@ const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
 //Controlador para la vista de profile
 const getProfileView = async (req, res) => {
   try {
-    const userId = 1; //Ponemos id = 1 para las pruebas, en el futuro será req.user.id
-    const result = await db.query("SELECT id_user, user_name, name, surname, email, rol, user_image FROM persons WHERE id_user = $1", [userId])
+    const userId = 1; // reemplaza con req.user.id cuando implementes auth
+    const result = await db.query(
+      "SELECT id_user, user_name, name, surname, email, rol, user_image FROM persons WHERE id_user = $1",
+      [userId]
+    );
 
-    if(result.rows.lenght === 0){
-      return res.status(404).json({ message: "Usuario no encontrado"})
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).send("Usuario no encontrado");
     }
 
-    const user = result.rows[0]
-    res.status(200).json({ message: "Perfil encontrado con éxito", data: user})
-  } catch (err){
-    console.error("Error al obtener el perfil", err);
-    res.status(500).json({ message: "Error en el servidor"})
+    res.render("profile", { user });
+  } catch (err) {
+    console.error("Error al obtener el perfil:", err);
+    res.status(500).send("Error en el servidor");
   }
 }
 
@@ -211,6 +215,8 @@ module.exports = {
     deleteUserAdmin,
     loginUsers,
     recoverPassword,
-    changePassword
+    changePassword,
+    getRecoverPasswordView,
+    getRestorePasswordView
     
 };
