@@ -1,8 +1,6 @@
 const pool = require('../config/db_pgsql'); // Configuracion de la BBDD
 const queries = require('../queries/api.queries'); // Consultas SQL
 
-
-
 //POST
 const createUser = async (user) => {
     const { user_name, name, surname, email, user_password, rol, user_image } = user; // Desestructuración del objeto
@@ -70,11 +68,40 @@ const deleteUserAdmin = async (email) => {
 }
 
 
+// GET Recuperar contraseña por email
+const getPasswordByEmail = async (email) => {
+    const client = await pool.connect();
+    try {
+      const result = await client.query(queries.recoverPassword, [email]);
+      return result.rows[0];
+    } catch (err) {
+      throw err;
+    } finally {
+      client.release();
+    }
+  };
 
+// Update contraseña por email
+const updatePasswordByEmail = async (email, hashedPassword) => {
+    const client = await pool.connect();
+    try {
+      const data = await client.query(queries.changePassword, [
+        hashedPassword,
+        email,
+      ]);
+      return data.rowCount;
+    } catch (err) {
+      throw err;
+    } finally {
+      client.release();
+    }
+  };
 
 module.exports = {
     createUser,
     updateUser,
-    deleteUserAdmin
+    deleteUserAdmin,
+    getPasswordByEmail,
+    updatePasswordByEmail
 }
 

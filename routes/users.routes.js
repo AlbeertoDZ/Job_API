@@ -38,6 +38,13 @@ router.delete('/api/user', usersControllers.deleteUserAdmin)
 //POST http://localhost:3000/api/login
 router.post("/login", usersControllers.loginUsers);
 
+//PASSWORD RECOVERY
+
+//GET Recuperar contraseña
+router.get("/recoverpassword", usersControllers.recoveryPassword);
+
+//GET Cambiar contraseña
+router.get("/changepassword", usersControllers.changePassword);
 
 //POST http://localhost:3000/api/logout
 router.post("/logout", (req, res) => {

@@ -1,7 +1,7 @@
 const db = require("../config/db_mongo");
 const Offer = require('../models/offer.model'); // Modelo de oferta
-const bcrypt = require("bcrypt"); // Librería para encriptar contraseñas
-const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
+// const bcrypt = require("bcrypt"); // Librería para encriptar contraseñas
+// const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
 
 // [GET] /api/search - Buscar ofertas de trabajo
 const searchOffers = async (req, res) => {
@@ -13,10 +13,6 @@ const searchOffers = async (req, res) => {
         message: 'Debes enviar los tres parámetros: job, city y salary',
       });
     }
-    console.log("Parámetros recibidos:");
-    console.log("job:", job);
-    console.log("city:", city);
-    console.log("salary:", salary);
     try {
       const resultados = await Offer.find({
         description: { $regex: job, $options: 'i' }, //regex para encontrar coincidencias en el texto
@@ -41,8 +37,9 @@ const createOffer = async (req, res) => {
   const description = req.body.description;
   const city = req.body.city;
   const salary = req.body.salary;
+  const url = req.body.url;
   // Validar que todos los campos estén presentes
-  if (!title || !company || !description || !city || !salary) {
+  if (!title || !company || !description || !city || !salary || !url) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
   try {
@@ -51,7 +48,8 @@ const createOffer = async (req, res) => {
       company,
       description,
       city,
-      salary
+      salary,
+      url
     });
     res.status(201).json({
       message: 'Oferta de empleo creada correctamente',
@@ -71,15 +69,16 @@ const editOffer = async (req, res) => {
   const description = req.body.description;
   const city = req.body.city;
   const salary = req.body.salary;
+  const url = req.body.url;
   // Validar campos
-  if (!company || !title || !description || !city || !salary) {
+  if (!company || !title || !description || !city || !salary || !url) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
   try {
     // Buscar y actualizar la oferta por su _id de MongoDB
     const ofertaActualizada = await Offer.findByIdAndUpdate(
       id,
-      { company, title, description, city, salary },
+      { company, title, description, city, salary, url },
       { new: true } // new: true devuelve el doc actualizado
     );
     if (!ofertaActualizada) {
@@ -90,7 +89,7 @@ const editOffer = async (req, res) => {
       offer: ofertaActualizada
     });
   } catch (error) {
-    console.error('ERROR PUT /api/ads/:carné_de_identidad:', error.message);
+    console.error('ERROR:', error.message);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 };

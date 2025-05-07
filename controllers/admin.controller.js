@@ -1,6 +1,6 @@
 const db = require("../config/db_pgsql");
 const Offer = require("../models/offer.model")
-const User = require("../models/users.model")
+//const User = require("../models/users.model")
 const Admin = require("../models/admin.model")
 
 // [GET] /users - Lista de usuarios (solo admin) //MIRAR LINEA 10
