@@ -27,8 +27,7 @@ const objectSchema = {
         required: true,
       },
       url: {
-        url: String,
-        maxlength: 1000,
+        url: String
       }
 }
 

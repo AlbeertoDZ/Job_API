@@ -7,16 +7,30 @@ const queries = {
     WHERE email = $8`,
     deleteUser: `DELETE FROM persons WHERE email = $1`,
     createFavorite: `INSERT INTO favorites (id_user, id_offer)
-     VALUES ($1, $2)
-     RETURNING *`,
+    VALUES ($1, $2)
+    RETURNING *`,
     deleteFavorite: `
-     DELETE FROM favorites
-     WHERE id_favorite = $1`,
+    DELETE FROM favorites
+    WHERE id_favorite = $1`,
     recoverPassword: `SELECT id_user, email
-       FROM public.persons
-      WHERE email = $1`,
+    FROM public.persons
+    WHERE email = $1`,
     restorePassword: `UPDATE public.persons
-        SET user_password = $1
-      WHERE email = $2`,
-}
+    SET user_password = $1
+    WHERE email = $2`,
+    createFavorite: `INSERT INTO favorites (id_user, id_offer)
+    VALUES ($1, $2)
+    RETURNING *`,
+    deleteFavorite: `
+    DELETE FROM favorites
+    WHERE id_favorite = $1
+    `,
+    recoverPassword: `SELECT id_user, email
+    FROM public.persons
+    WHERE email = $1`,
+    changePassword: `UPDATE public.persons
+    SET user_password = $1
+    WHERE email = $2`,
+};
+
 module.exports = queries;

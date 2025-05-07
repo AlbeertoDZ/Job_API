@@ -26,7 +26,7 @@ const getFavoritesView = async (req, res) => {
 // Añadir a favoritos
 const addFavorite = async (req, res) => {
   const adId = req.params.id;
-  const { userId } = req.body;
+  const userId = req.body.userId;
   try {
     const favorite = await createFavorite(userId, adId);
     res.status(201).json({ message: "Favorito creado", data: favorite });
@@ -47,7 +47,7 @@ const deleteFavorite = async (req, res) => {
     res.status(200).send("Favorito eliminado! Has borrado: " + id);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error al intentar borrar el favorito");
+    res.status(500).json({ message: "Error al intentar borrar el favorito" });
   }
 };
 
