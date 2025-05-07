@@ -26,9 +26,9 @@ app.use(express.static("public")); // Middleware para servir archivos estáticos
 app.use(express.json());
 
 //app.use("/api", apiRoutes); //siempre con prefijo api
-app.use("/api", offerRoutes); //Rutas ofertas de trabajo
-app.use("/", userRoutes); //Rutas de usuarios
-app.use("/", adminRoutes); //Rutas de admin
+app.use("/offers", offerRoutes); //Rutas ofertas de trabajo
+app.use("/users", userRoutes); //Rutas de usuarios
+app.use("/admin", adminRoutes); //Rutas de admin
 app.use("/favorites", favoriteRoutes); //Ruta de ofertas favoritas
 
 // Configuración de vistas PUG - Motor de plantillas
