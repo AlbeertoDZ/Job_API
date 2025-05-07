@@ -12,9 +12,6 @@ const getProfileView = async (req, res) => {
       [userId]
     );
 
-    const user = result.rows[0];
-
-
     if (result.rows.lenght === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" })
     }
