@@ -41,8 +41,8 @@ router.post("/login", usersControllers.loginUsers);
 //GET Recuperar contraseña http://localhost:3000/recoverpassword
 router.get("/recoverpassword", usersControllers.recoverPassword);
 
-//GET Cambiar contraseña http://localhost:3000/restorepassword
-router.get("/restorepassword", usersControllers.changePassword);
+//GET Cambiar contraseña http://localhost:3000/reset-password
+router.get("/reset-password", usersControllers.changePassword);
 
 
 //POST http://localhost:3000/api/logout
