@@ -1,21 +1,33 @@
 const queries = require('../db/queries/api.queries');
 const pool = require('../db/config/db_pgsql'); // Configuracion de la BBDD
 
-// Inserta favorito
+// Crear favorito
 async function createFavorite(userId, adId) {
-    const { rows } = await pool.query(queries.createFavorites[(userId, adId)]);
-    return rows[0];
+  const client = await pool.connect();
+  try {
+    const data = await client.query(queries.createFavorite, [userId, adId]);
+    return data.rows[0];
+  } finally {
+    client.release();
   }
-
-// Elimina favorito
-async function removeFavorite(id) {
-  const { rowCount } = await pool.query(queries.deleteFavorite[id]);
-  return rowCount;
-}
+}   
+// Eliminar favorito
+const removeFavorite = async (id) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(queries.deleteFavorite, [id]);
+    return result.rowCount;
+  } catch (err) {
+    throw err;
+  } finally {
+    client.release();
+  }
+};
 
 
 
 
 module.exports = {
     createFavorite,
+    removeFavorite
 };

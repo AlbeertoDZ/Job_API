@@ -8,15 +8,11 @@ const searchOffers = async (req, res) => {
     const job = req.query.job;
     const city = req.query.city;
     const salary = req.query.salary;
-    if (!job || !city || !salary) {
+    if (!job && !city && !salary) {
       return res.status(400).json({
         message: 'Debes enviar los tres parámetros: job, city y salary',
       });
     }
-    console.log("Parámetros recibidos:");
-    console.log("job:", job);
-    console.log("city:", city);
-    console.log("salary:", salary);
     try {
       const resultados = await Offer.find({
         description: { $regex: job, $options: 'i' }, //regex para encontrar coincidencias en el texto
