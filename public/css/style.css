@@ -119,6 +119,15 @@ nav.menu {
     border-radius: 10px;
 }
 
+/* Estilos botones inicio y registro */
+
+.buttons-container{
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
 /* Estilos botón */
 
 .button{
@@ -143,6 +152,25 @@ nav.menu {
     width: auto;
     height: 40px;
     border-radius: 5px;
+}
+
+/* Estilos formulario crear usuario */
+
+#createUserForm{
+    display: flex;
+    justify-content: center;
+}
+
+.form-card {
+    background-color: var(--footer-color);
+    padding: 1.5rem;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 2rem auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 /* Estilos login */
@@ -320,5 +348,12 @@ footer a:hover{
     .footer-nav ul {
       flex-direction: row;
       gap: 3rem;
+    }
+}
+
+@media (max-width: 480px){
+    .buttons-container{
+        flex-direction: column;
+        align-items: center;
     }
 }

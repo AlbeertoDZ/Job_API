@@ -147,6 +147,14 @@ const loginUsers = async (req, res) => {
   }
 };
 
+//Renderizar las vistas para recuperar y reestablecer contraseña
+const getRecoverPasswordView = (req, res) => {
+  res.render("recoverPassword")
+}
+
+const getRestorePasswordView = (req, res) => {
+  res.render("restorePassword")
+}
 
 // Recuperar constraseña
 const recoverPassword = async (req, res) => {
@@ -224,5 +232,4 @@ module.exports = {
     changePassword,
     getRecoverPasswordView,
     getRestorePasswordView
-    
 };
