@@ -36,7 +36,7 @@ router.put('/api/user', usersControllers.updateUser);
 router.delete('/api/user', usersControllers.deleteUserAdmin)
 
 //POST http://localhost:3000/api/login
-router.post("/login", usersControllers.loginUsers);
+router.post("/api/login", usersControllers.loginUsers);
 
 //GET Recuperar contraseña http://localhost:3000/recoverpassword
 router.get("/recoverpassword", usersControllers.recoverPassword);
@@ -46,8 +46,8 @@ router.get("/reset-password", usersControllers.changePassword);
 
 
 //POST http://localhost:3000/api/logout
-router.post("/logout", (req, res) => {
-    res.redirect('/login');
+router.post("/api/logout", (req, res) => {
+    res.status(200).json({ message: 'Sesión cerrada correctamente' });
   });
 
 

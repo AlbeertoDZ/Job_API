@@ -2,6 +2,7 @@ const db = require("../config/db_pgsql");
 const User = require("../models/users.model"); // Modelo de usuario
 const bcrypt = require("bcrypt"); // Librería para encriptar contraseñas
 const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
+const pool = require('../config/db_pgsql');
 
 //Controlador para la vista de profile
 const getProfileView = async (req, res) => {
@@ -104,8 +105,7 @@ const deleteUserAdmin = async (req, res) => {
 
 // [POST] /api/login - Iniciar sesión
 const loginUsers = async (req, res) => {
-  console.log(req.body.email);
-  console.log(req.body.password);
+  
   try {
     const dataEmail = req.body.email;
     const dataPass = req.body.password;
@@ -114,7 +114,7 @@ const loginUsers = async (req, res) => {
       return res.status(401).json({ message: 'Usuario no encontrado' });
     }
     const person = result.rows[0];//guardamos el primer resultado del array
-    const truePass = await bcrypt.compare(dataPass, person.password);
+    const truePass = await bcrypt.compare(dataPass, person.user_password);
     if (!truePass) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
