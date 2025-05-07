@@ -87,9 +87,7 @@ const sendRecoveryEmail = async (req, res) => {
 const changePassword = async (req, res) => {
   const { token, newPassword } = req.query;
   if (!token || !newPassword) {
-    return res
-      .status(400)
-      .json({ message: "Faltan datos (token o newPassword)" });
+    return res.status(400).json({ message: "Faltan datos" });
   }
   if (newPassword.length < 8) {
     return res
@@ -102,14 +100,20 @@ const changePassword = async (req, res) => {
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
 
     // 2) Comprobamos que existe el usuario
-    const { rows } = await pool.query(queries.recoverPassword[email]);
+    const { rows } = await pool.query(queries.recoverPassword, [email]);
     if (rows.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     // 3) Hasheamos y actualizamos
     const hashed = await bcrypt.hash(newPassword, 10);
-    await pool.query(queries.changePassword[(hashed, email)]);
+    const result = await pool.query(queries.changePassword, [hashed, email]);
+
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ message: "Usuario no encontrado al actualizar" });
+    }
 
     return res
       .status(200)
