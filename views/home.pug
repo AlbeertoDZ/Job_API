@@ -12,17 +12,7 @@ html(lang="es")
             img(src="/img/logo-jobin.png", alt="Logo JobIn", class="img-logo")
             h1 Bienvenido a JobIn
             form(method="get", action="/api/search")
-                input(type="text", name="q", placeholder="Buscar ofertas...", required)
+                input.searcher(type="text", placeholder="Buscar empleo...", required)
                 button.button(type="submit") Buscar
 
-            if results && results.length
-                section
-                    each offer in results
-                        article.card
-                            h2= offer.title
-                            p Empresa: #{offer.company}
-                            p Ciudad: #{offer.city}
-                            p Salario: #{offer.salary} €
-                            a(href=offer.link, target="_blank") Ver más
-
-            include ./footer
+        include ./footer

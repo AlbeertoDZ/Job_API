@@ -5,21 +5,32 @@ const Favorites = require("../models/favorite.model");
 const getFavoritesView = async (req, res) => {
   try {
     const userId = req.user?.id || 1;
-    const offerIds = await Favorites.getFavorites(userId);
 
-    if (offerIds.length === 0) {
+    const registros = await Favorites.getFavorites(userId);
+
+    if (!registros.length) {
       return res.render("favorites", { offers: [] });
     }
 
-    const objectIds = offerIds.map(obj => new mongoose.Types.ObjectId(obj.id_offer));
-    const favoriteOffers = await Offer.find({ _id: { $in: objectIds } });
+    const ofertasValidas = [];
+    for (const { id_offer } of registros) {
+      try {
+        const oferta = await Offer.findById(id_offer);
 
-    res.render("favorites", { offers: favoriteOffers });
+        if (oferta) ofertasValidas.push(oferta);
+      } catch (err) {
+        console.error(`Error al buscar oferta con ID ${id_offer}:`, err.message);
+      }
+    }
+
+    // 3. Renderizar la vista con las ofertas encontradas
+    res.render("favorites", { offers: ofertasValidas });
   } catch (err) {
-    console.error("Error al obtener las ofertas guardadas:", err);
+    console.error("Error al obtener las ofertas favoritas:", err);
     res.status(500).send("Error en el servidor");
   }
 };
+
 
 // Añadir a favoritos
 const addFavorite = async (req, res) => {
