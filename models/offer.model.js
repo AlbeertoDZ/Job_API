@@ -25,6 +25,9 @@ const objectSchema = {
       salary: {
         type: Number,
         required: true,
+      },
+      url: {
+        url: String
       }
 }
 
@@ -35,3 +38,4 @@ const offerSchema = mongoose.Schema(objectSchema, {versionKey: false})
 const Offer = mongoose.model("Offer", offerSchema)
 
 module.exports = Offer;
+

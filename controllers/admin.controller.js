@@ -12,7 +12,7 @@ const getUsersAdmin = async (req, res) => {
             data: users
         });
     } catch (err){
-        console.error("Error al crgar los usuarios: ", err)
+        console.error("Error al cargar los usuarios: ", err)
         res.status(500).json({ message: "Error en el servidor" })
     }
 }
