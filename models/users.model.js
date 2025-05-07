@@ -42,8 +42,8 @@ const updateUser = async (user) => {
             rol,
             user_image,
             old_email
-        ])
-        result = data.rows
+        ]);
+        result = data.rowCount;
     } catch (err) {
         console.log(err);
         throw err;
@@ -53,20 +53,21 @@ const updateUser = async (user) => {
     return result
 }
 
+
 //DELETE
 const deleteUserAdmin = async (email) => {
     let client, result;
     try {
         client = await pool.connect(); // Espera a abrir conexion
         const data = await client.query(queries.deleteUserAdmin, [email])
-        result = data.rows
+        result = data.rowCount;
     } catch (err) {
         console.log(err);
         throw err;
     } finally {
         client.release();
     }
-    return result
+    return result;
 }
 
 // Recuperar contraseña por email
