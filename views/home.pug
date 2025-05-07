@@ -1,17 +1,28 @@
-html(lang="en")
+html(lang="es")
     head
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet", href="/css/style.css")
-        title Ejercicio Pug 
+        title Home 
         
     body
         main
-            include ./headerUser
+            include ./headerHome
             img(src="/img/logo-jobin.png", alt="Logo JobIn", class="img-logo")
             h1 Bienvenido a JobIn
-            a.button(href='/login') Iniciar sesión
-            a.button(href='/signup') Registrarse
+            form(method="get", action="/api/search")
+                input(type="text", name="q", placeholder="Buscar ofertas...", required)
+                button.button(type="submit") Buscar
+
+            if results && results.length
+                section
+                    each offer in results
+                        article.card
+                            h2= offer.title
+                            p Empresa: #{offer.company}
+                            p Ciudad: #{offer.city}
+                            p Salario: #{offer.salary} €
+                            a(href=offer.link, target="_blank") Ver más
 
             include ./footer

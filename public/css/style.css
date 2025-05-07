@@ -83,7 +83,7 @@ nav.menu {
 }
   
 .menu-items li {
-    padding: 10px 0;
+    padding: 4px 0;
 }
   
 .menu-items a {
@@ -91,6 +91,8 @@ nav.menu {
     text-decoration: none;
     padding: 10px 20px;
     display: block;
+    white-space: nowrap;
+    min-width: 150px;
 }
   
 .menu-items a:hover {
@@ -194,6 +196,28 @@ nav.menu {
 .forgot-password:hover {
     text-decoration: underline;
 }
+
+/* Estilos de favoritos */
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+  
+.offer-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+  
+.offer-card h2 {
+    margin-top: 0;
+    color: var(--text-color);
+}  
 
 /* Estilos footer */
 

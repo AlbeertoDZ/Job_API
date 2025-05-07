@@ -6,5 +6,10 @@ const queries = {
     updateUser: `UPDATE persons SET user_name = $1, name = $2, surname = $3, email = $4, user_password = $5, rol = $6, user_image = $7
     WHERE email = $8`,
     deleteUser: `DELETE FROM persons WHERE email = $1`,
+    getFavoritesByUserId: `
+    SELECT id_offer
+    FROM favorites
+    WHERE id_user = $1
+    `
 }
 module.exports = queries;
