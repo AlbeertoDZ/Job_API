@@ -14,7 +14,7 @@ connectDB();
 const userRoutes = require("./routes/users.routes");
 const adminRoutes = require("./routes/admin.routes");
 const offerRoutes = require("./routes/offer.routes");
-const favoriteRoutes = require("./routes/favourite.routes")
+const favoriteRoutes = require("./routes/favorite.routes")
 
 //Middleware Morgan
 const morgan = require("./middlewares/morgan");

@@ -83,7 +83,7 @@ nav.menu {
 }
   
 .menu-items li {
-    padding: 10px 0;
+    padding: 4px 0;
 }
   
 .menu-items a {
@@ -91,6 +91,8 @@ nav.menu {
     text-decoration: none;
     padding: 10px 20px;
     display: block;
+    white-space: nowrap;
+    min-width: 150px;
 }
   
 .menu-items a:hover {
@@ -135,6 +137,12 @@ nav.menu {
 
 .button:hover {
     background-color: #003d73;
+}
+
+.searcher{
+    width: auto;
+    height: 40px;
+    border-radius: 5px;
 }
 
 /* Estilos login */
@@ -195,18 +203,90 @@ nav.menu {
     text-decoration: underline;
 }
 
+/* Estilos de favoritos */
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+  
+.offer-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+  
+.offer-card h2 {
+    margin-top: 0;
+    color: var(--text-color);
+}  
+
+/* Estilos dashboard Admin */
+
+.users-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+}
+  
+.profile-container {
+    background-color: var(--footer-color);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 1.5rem;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos formulario crear oferta */
+
+.form-card{
+    background-color: var(--footer-color);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.form-card label {
+    display: block;
+    margin: 0.5rem 0 0.25rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+
+.form-card input,
+.form-card textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: var(--font-text);
+}
+
 /* Estilos footer */
 
 footer{
-    position:fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     padding: 10px;
     text-align: center;
     color: var(--text-color);
     border: 1px solid sandybrown;
     background-color: var(--footer-color);
+    margin-top: 2rem;
 }
 
 footer a{

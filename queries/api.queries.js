@@ -3,6 +3,7 @@ const queries = {
     FROM persons`,
     createUser: `INSERT INTO persons (user_name, name, surname, email, user_password, rol, user_image)
     VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+
     updateUser: `UPDATE persons 
     SET 
         user_name = $1, 
@@ -15,6 +16,13 @@ const queries = {
     WHERE 
         email = $8`,
     deleteUserAdmin: `DELETE FROM persons WHERE email = $1`,
+
+    getFavoritesByUserId: `
+    SELECT id_offer
+    FROM favorites
+    WHERE id_user = $1
+    `,
+
     createFavorite: `INSERT INTO favorites (id_user, id_offer)
     VALUES ($1, $2)
     RETURNING *`,
