@@ -1,27 +1,36 @@
-const db = require("../config/db_pgsql");
-const Offer = require("../models/offer.model")
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const Offer = require("../models/offer.model");
+const Favorites = require("../models/favorite.model");
 
-//Controlador para la vista de favorites
 const getFavoritesView = async (req, res) => {
-    try {
-      const userId = req.user?.id || 1; //Busca el id de un usuario logado, si no hay nadie logado utilizamos 1 para pruebas
-      const result = await db.query("SELECT id_offer FROM favorites WHERE id_user = $1", [userId]); 
-      const offerIds = result.rows.map(row => row.id_offer); //Extraemos solo los valores id_offer
+  try {
+    const userId = req.user?.id || 1;
 
-      if (offerIds.length === 0){
-        return res.status(200).json([])
-      }
+    const registros = await Favorites.getFavorites(userId);
 
-      const objectIds = offerIds.map(id => new mongoose.Types.ObjectId(id)); //Convertimos cada string en una instancia para que podamos hacer la búsqueda
-      const favoriteOffers = await Offer.find({_id: { $in: objectIds }});
-
-      res.status(200).json(favoriteOffers)
-    } catch (err) {
-      console.error("Error al obtener las ofertas guardadas", err);
-      res.status(500).json({ message: "Error en el servidor"})
+    if (!registros.length) {
+      return res.render("favorites", { offers: [] });
     }
-  };
+
+    const ofertasValidas = [];
+    for (const { id_offer } of registros) {
+      try {
+        const oferta = await Offer.findById(id_offer);
+
+        if (oferta) ofertasValidas.push(oferta);
+      } catch (err) {
+        console.error(`Error al buscar oferta con ID ${id_offer}:`, err.message);
+      }
+    }
+
+    // 3. Renderizar la vista con las ofertas encontradas
+    res.render("favorites", { offers: ofertasValidas });
+  } catch (err) {
+    console.error("Error al obtener las ofertas favoritas:", err);
+    res.status(500).send("Error en el servidor");
+  }
+};
+
 
 // Añadir a favoritos
 const addFavorite = async (req, res) => {
