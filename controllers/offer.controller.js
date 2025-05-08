@@ -43,17 +43,30 @@ const searchOffers = async (req, res) => {
 
 //POST http://localhost:3000/api/ads/(..id..)
 const createOffer = async (req, res) => {
+  console.log(req.body);
+  
   const title = req.body.title;
   const company = req.body.company;
   const description = req.body.description;
   const city = req.body.city;
   const salary = req.body.salary;
   const url = req.body.url;
+
+ 
   // Validar que todos los campos estén presentes
   if (!title || !company || !description || !city || !salary || !url) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
   try {
+    console.log({
+      title,
+      company,
+      description,
+      city,
+      salary,
+      url
+    });
+    
     const nuevaOferta = await Offer.create({
       title,
       company,

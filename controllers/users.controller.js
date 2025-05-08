@@ -12,12 +12,12 @@ const getProfileView = async (req, res) => {
       [userId]
     );
 
-    if (result.rows.length === 0) {
+    if (result.rows.lenght === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" })
     }
 
     const user = result.rows[0]
-    res.render("profile", { user })
+    res.status(200).json({ message: "Perfil encontrado con éxito", data: user })
   } catch (err) {
     console.error("Error al obtener el perfil", err);
     res.status(500).json({ message: "Error en el servidor" })
@@ -110,7 +110,8 @@ const deleteUserAdmin = async (req, res) => {
 
 // [POST] /api/login - Iniciar sesión
 const loginUsers = async (req, res) => {
-  
+  console.log(req.body.email);
+  console.log(req.body.password);
   try {
     const dataEmail = req.body.email;
     const dataPass = req.body.password;
@@ -121,9 +122,7 @@ const loginUsers = async (req, res) => {
     const person = result.rows[0];//guardamos el primer resultado del array
     console.log(person);
     
-    const truePass = await bcrypt.compare(dataPass, person.user_password);
-   
-
+    const truePass = await bcrypt.compare(dataPass, person.password);
     if (!truePass) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
@@ -132,6 +131,11 @@ const loginUsers = async (req, res) => {
       process.env.JWT_SECRET,                // aquí va tu clave secreta
       { expiresIn: '1h' }                    // duración del token
     );
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 3600000 // 1 hora
+    })
     res.status(200).json({
       message: '¡Bienvenido!',
       token: token, //valor de la variable token
@@ -154,6 +158,7 @@ const getRecoverPasswordView = (req, res) => {
 const getRestorePasswordView = (req, res) => {
   res.render("restorePassword")
 }
+
 
 // Recuperar constraseña
 const recoverPassword = async (req, res) => {

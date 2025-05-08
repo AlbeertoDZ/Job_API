@@ -19,7 +19,10 @@ const getFavoritesView = async (req, res) => {
 
         if (oferta) ofertasValidas.push(oferta);
       } catch (err) {
-        console.error(`Error al buscar oferta con ID ${id_offer}:`, err.message);
+        console.error(
+          `Error al buscar oferta con ID ${id_offer}:`,
+          err.message
+        );
       }
     }
 
@@ -31,13 +34,13 @@ const getFavoritesView = async (req, res) => {
   }
 };
 
-
-// Añadir a favoritos 
+// Añadir a favoritos
 const addFavorite = async (req, res) => {
-  const adId = req.params.id;
-  const userId = req.body.userId;
+  const id_favorite = req.params.id;
+  const { id_user } = req.body;
+
   try {
-    const favorite = await createFavorite(userId, adId);
+    const favorite = await Favorites.createFavorite(id_user, id_favorite);
     res.status(201).json({ message: "Favorito creado", data: favorite });
   } catch (err) {
     console.error(err);
@@ -61,7 +64,7 @@ const deleteFavorite = async (req, res) => {
 };
 
 module.exports = {
-    getFavoritesView,
-    addFavorite,
-    deleteFavorite,
-}
+  getFavoritesView,
+  addFavorite,
+  deleteFavorite,
+};
