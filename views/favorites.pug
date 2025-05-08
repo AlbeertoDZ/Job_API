@@ -1,0 +1,22 @@
+html
+  head
+    title Mis Favoritos
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    main
+      h1 Mis favoritos
+
+      if offers.length === 0
+        p Aún no tienes ofertas guardadas
+      else
+        - const o = offers[0]
+        .offer-card
+          h2= o.title
+          p Empresa: #{o.company}
+          p Ciudad: #{o.city}
+          p Salario: #{o.salary}
+          p Cantidad de favoritos: #{offers.length}
+
+          button.button(type="submit") Eliminar de favoritos
+
+    include ./footer
