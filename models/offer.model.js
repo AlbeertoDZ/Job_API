@@ -24,10 +24,13 @@ const objectSchema = {
       },
       salary: {
         type: Number,
-        required: true,
+        required: false,
       },
       url: {
-        url: String
+        type: String,
+        required: false,
+        maxlength: 800,
+        unique: true
       }
 }
 

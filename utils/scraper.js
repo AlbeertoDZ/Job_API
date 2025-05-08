@@ -1,4 +1,3 @@
-const jobOfferModel = require ('../models/offer.model')
 const puppeteer = require('puppeteer');
 
 const startBrowser = async () => {
@@ -9,11 +8,10 @@ const startBrowser = async () => {
 
   const page = await browser.newPage();
 
-  await page.goto('https://ticjob.es/esp/busqueda', { //navega en esta URL
-    waitUntil: 'networkidle2' //Espera hasta que no haya más de 2 peticiones de red activas
+  await page.goto('https://ticjob.es/esp/busqueda', {
+    waitUntil: 'networkidle2'
   });
 
-  // Esperar a que se cargue al menos un job-card
   await page.waitForSelector('.job-card');
 
   const jobs = await page.evaluate(() => {
@@ -22,37 +20,35 @@ const startBrowser = async () => {
 
     jobCards.forEach(card => {
       const title = card.querySelector('.job-title')?.innerText.trim() || 'N/A';
-      const h3 = card.querySelector('h3')?.innerText.trim() || 'N/A';
-      
-      // Buscar el elemento con la clase .job-description dentro de card
-      const descriptionElement = card.querySelector('.job-description');
-      // Obtener el texto o mostrar mensaje por defecto
-      let description = descriptionElement ? descriptionElement.innerText.trim() : "No description found";
-      // Limitar a 100 caracteres (no 150 como antes) y añadir "..." si es largo
+      const company = card.querySelector('h3')?.innerText.trim() || 'N/A';
+
+      let description = card.querySelector('.job-description')?.innerText.trim() || "No description found";
       description = description.length > 100
         ? description.substring(0, 150) + "..."
         : description;
-      // Elimina saltos de línea
       description = description.replace(/(\r\n|\n|\r|\t)/gm, " ");
 
-      const location = card.querySelector('.job-card-label.location-field')?.innerText.trim() || 'N/A';
-      const salary = card.querySelector('.job-card-label.salary-field')?.innerText.trim() || 'N/A';
-      const url = card.querySelector('.job-card-header a').href || 'N/A';
+      const city = card.querySelector('.job-card-label.location-field')?.innerText.trim() || 'N/A';
 
-      results.push({ title, h3, description, location, salary, url });
+      let salaryText = card.querySelector('.job-card-label.salary-field')?.innerText.trim() || '';
+      salaryText = salaryText.replace(/\./g, '');
+      const match = salaryText.match(/\d+/);
+      const salary = match ? parseInt(match[0], 10) : 0;
+
+      const url = card.querySelector('.job-card-header a')?.href || 'N/A';
+
+      results.push({ title, company, description, city, salary, url });
     });
 
     return results;
-  }); 
-
-
-
-  // await page.click(a[href='/'])?
+  });
 
   console.log('Offers found:', jobs.length);
   console.log(jobs);
 
   await browser.close();
+
+  return jobs; // devolver los resultados al final
 };
 
-startBrowser();
+module.exports = startBrowser;
