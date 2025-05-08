@@ -23,6 +23,8 @@ const favoriteRoutes = require("./routes/favorite.routes")
 
 //Middleware Morgan
 const morgan = require("./middlewares/morgan");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 // Logger
 app.use(express.static("public")); // Middleware para servir archivos estáticos de front
@@ -36,6 +38,9 @@ app.use("/offers", offerRoutes); //Rutas ofertas de trabajo
 app.use("/users", userRoutes); //Rutas de usuarios
 app.use("/admin", adminRoutes); //Rutas de admin
 app.use("/favorites", favoriteRoutes); //Ruta de ofertas favoritas
+
+// http://localhost:3000/api-docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Configuración de vistas PUG - Motor de plantillas
 app.set("view engine", "pug");

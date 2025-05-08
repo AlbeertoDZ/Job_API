@@ -1,0 +1,194 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "JobIn API",
+      "version": "1.0.0",
+      "description": "API para JobIn, una web app de búsqueda y gestión de ofertas laborales en España."
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Servidor local"
+      }
+    ],
+    "paths": {
+      "/offers": {
+        "post": {
+          "summary": "Crear una oferta (admin)",
+          "requestBody": {
+            "description": "Datos de la oferta",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Oferta creada",
+              "content": {
+                "application/json": {
+                  "schema": { "$ref": "#/components/schemas/Offer" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/offers/{id}": {
+        "put": {
+          "summary": "Editar una oferta (admin)",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "string" }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OfferInput" }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Oferta actualizada" }
+          }
+        },
+        "delete": {
+          "summary": "Borrar una oferta (admin)",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "string" }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Oferta eliminada" },
+            "404": { "description": "Oferta no encontrada" }
+          }
+        }
+      },
+      "/favorites/{id}": {
+        "post": {
+          "summary": "Añadir un favorito",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "string" }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": { "type": "string" }
+                  },
+                  "required": ["userId"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": { "description": "Favorito creado" }
+          }
+        },
+        "delete": {
+          "summary": "Eliminar un favorito",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "string" }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Favorito eliminado" },
+            "404": { "description": "Favorito no encontrado" }
+          }
+        }
+      },
+      "/users/recoverpassword": {
+        "get": {
+          "summary": "Recuperar contraseña (enviar token)",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "required": true,
+              "schema": { "type": "string", "format": "email" }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Instrucciones enviadas (ó placeholder)" },
+            "400": { "description": "Email faltante" }
+          }
+        }
+      },
+      "/users/restorepassword": {
+        "get": {
+          "summary": "Cambiar contraseña (usando token)",
+          "parameters": [
+            {
+              "name": "token",
+              "in": "query",
+              "required": true,
+              "schema": { "type": "string" }
+            },
+            {
+              "name": "newPassword",
+              "in": "query",
+              "required": true,
+              "schema": { "type": "string" }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Contraseña actualizada con éxito" },
+            "400": { "description": "Faltan datos o contraseña demasiado corta" },
+            "404": { "description": "Usuario no encontrado" }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "OfferInput": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "company": { "type": "string" },
+            "description": { "type": "string" },
+            "city": { "type": "string" },
+            "salary": { "type": "number" }
+          },
+          "required": ["title", "company", "description", "city", "salary"]
+        },
+        "Offer": {
+          "allOf": [
+            { "$ref": "#/components/schemas/OfferInput" },
+            {
+              "type": "object",
+              "properties": {
+                "_id": { "type": "string" },
+                "createdAt": { "type": "string", "format": "date-time" }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
