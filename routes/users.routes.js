@@ -26,8 +26,6 @@ router.get("/profile", usersControllers.getProfileView)
 //router.get("/profile", authMiddleware, usersControllers.getProfileView)
 
 //API REST
-
-
 //POST --> Registrarse en la app
 router.post('/', usersControllers.createUser);
 
@@ -44,13 +42,18 @@ router.delete('/:email', authMiddleware, isAdminMiddleware, usersControllers.del
 //POST http://localhost:3000/api/login
 router.post("/login", usersControllers.loginUsers);
 
+//Rutas para las vistas de recuperar y restaurar contraseña
+router.get("/recoverpassword", usersControllers.getRecoverPasswordView)
+router.get("/reset-password", usersControllers.getRestorePasswordView)
+
+
 //GET Recuperar contraseña http://localhost:3000/recoverpassword
 router.get("/recoverpassword", usersControllers.recoverPassword);
-s
+
 //GET Cambiar contraseña
+router.get("/reset-password", usersControllers.changePassword);
 router.get("/restorepassword", usersControllers.changePassword);
 
-  
 
 //POST http://localhost:3000/api/logout
 router.post("/logout", (req, res) => {

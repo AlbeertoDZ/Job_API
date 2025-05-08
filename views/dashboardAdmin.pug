@@ -6,7 +6,33 @@ html
     include ./headerAdmin
 
     main
-        h1 Panel de control
+        h1 Panel de control de usuarios
+
+        button.button#toggleForm Crear nuevo usuario
+
+        form#createUserForm(style="display: none;" method="POST")
+          .form-card
+            label(for="user_name") Nombre de usuario: 
+            input(type="text", name="user_name", required)
+
+            label(for="name") Nombre: 
+            input(type="text", name="name", required)
+
+            label(for="surname") Apellidos:
+            input(type="text", name="surname", required)
+
+            label(for="email") Correo electrónico: 
+            input(type="email", name="email", required)
+
+            label(for="rol") Rol:
+            select(name="rol", required)
+              option(value="user") Usuario
+              option(value="admin") Administrador
+
+            label(for="user_image") Imagen (URL):
+            input(type="text", name="user_image")
+
+            button.button(type="submit") Crear usuario
 
         if users.length === 0
             p No hay usuarios registrados
@@ -33,3 +59,4 @@ html
                         button.button(type="submit") Eliminar usuario
     
     include ./footer
+    script(src="/js/script.js")

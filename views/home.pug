@@ -11,6 +11,11 @@ html(lang="es")
             include ./headerHome
             img(src="/img/logo-jobin.png", alt="Logo JobIn", class="img-logo")
             h1 Bienvenido a JobIn
+
+            .buttons-container
+                a.button(href="/login") Iniciar sesión
+                a.button(href="/signup") Regístrate
+
             form(method="get", action="/api/search")
                 input.searcher(type="text", placeholder="Buscar empleo...", required)
                 button.button(type="submit") Buscar

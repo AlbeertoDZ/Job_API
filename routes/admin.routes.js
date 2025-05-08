@@ -13,4 +13,9 @@ router.get('/users', authMiddleware, isAdminMiddleware,adminControllers.getUsers
 router.get('/dashboard', adminControllers.getDashboardView)
 //router.get("/dashboard, authMiddleware, adminControllers.getDashboardView")
 
+//GET --> http://localhost:3000/admin vista de la home de admin
+router.get('/', (req, res) => {
+    res.render("homeAdmin")
+})
+
 module.exports = router;

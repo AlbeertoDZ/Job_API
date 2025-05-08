@@ -12,12 +12,12 @@ const getProfileView = async (req, res) => {
       [userId]
     );
 
-    if (result.rows.lenght === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" })
     }
 
     const user = result.rows[0]
-    res.status(200).json({ message: "Perfil encontrado con éxito", data: user })
+    res.render("profile", { user })
   } catch (err) {
     console.error("Error al obtener el perfil", err);
     res.status(500).json({ message: "Error en el servidor" })
@@ -147,6 +147,14 @@ const loginUsers = async (req, res) => {
   }
 };
 
+//Renderizar las vistas para recuperar y reestablecer contraseña
+const getRecoverPasswordView = (req, res) => {
+  res.render("recoverPassword")
+}
+
+const getRestorePasswordView = (req, res) => {
+  res.render("restorePassword")
+}
 
 // Recuperar constraseña
 const recoverPassword = async (req, res) => {
@@ -215,11 +223,13 @@ const changePassword = async (req, res) => {
 
 
 module.exports = {
-  getProfileView,
-  createUser,
-  updateUser,
-  deleteUserAdmin,
-  loginUsers,
-  recoverPassword,
-  changePassword
+    getProfileView,
+    createUser,
+    updateUser,
+    deleteUserAdmin,
+    loginUsers,
+    recoverPassword,
+    changePassword,
+    getRecoverPasswordView,
+    getRestorePasswordView
 };
