@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const offerControllers = require("../controllers/offer.controller")
 
+//Ruta para obtener todas las ofertas
+//GET http://localhost:3000/alloffers
+router.get("/alloffers", offerControllers.getAllOffers)
+
 //GET http://localhost:3000/api/search
 router.get("/search", offerControllers.searchOffers);
 

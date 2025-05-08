@@ -23,7 +23,7 @@ const getDashboardView = async (req, res) => {
         //const userId = 1; //Para pruebas. Con auth será ==> req.user.id
         const offers = await Offer.find();
 
-        console.log("Ofertas cargadas desde MongoDB: ", offers)
+        //console.log("Ofertas cargadas desde MongoDB: ", offers)
 
         res.render("dashboardOffers", { offers })
     } catch (err) {

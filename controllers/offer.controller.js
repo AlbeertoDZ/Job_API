@@ -3,6 +3,17 @@ const Offer = require('../models/offer.model'); // Modelo de oferta
 const bcrypt = require("bcrypt"); // Librería para encriptar contraseñas
 const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
 
+//GET http://localhost:3000/api/offers
+const getAllOffers = async (req, res) => {
+  try {
+    const offers = await Offer.find();
+    res.status(200).json(offers)
+  } catch (err){
+    console.error("Error al obtener las ofertas");
+    res.status(500).json({ message: "Error en el servidor" })
+  }
+}
+
 // [GET] /offer/search - Buscar ofertas de trabajo
 const searchOffers = async (req, res) => {
     const job = req.query.job || "";
@@ -110,6 +121,7 @@ const deleteOffer = async (req, res) => {
 };
 
   module.exports = {
+    getAllOffers,
     searchOffers,
     createOffer,
     editOffer,
