@@ -1,20 +1,19 @@
 const express = require("express");
 const app = express();
 
-require('dotenv').config();// Cargar variables de entorno
+require("dotenv").config(); // Cargar variables de entorno
 
 const connectDB = require("./config/db_mongo"); // Conexión a MongoDB Atlas
 //Conectar a la base de datos de MongoDB Atlas
-connectDB(); 
+connectDB();
 
 //const mongoose = require("mongoose");
-
 
 //const apiRoutes = require("./routes/api.routes");
 const userRoutes = require("./routes/users.routes");
 const adminRoutes = require("./routes/admin.routes");
 const offerRoutes = require("./routes/offer.routes");
-const favoriteRoutes = require("./routes/favorite.routes")
+const favoriteRoutes = require("./routes/favorite.routes");
 
 //Middleware Morgan
 const morgan = require("./middlewares/morgan");
@@ -26,7 +25,7 @@ app.use(express.static("public")); // Middleware para servir archivos estáticos
 app.use(express.json());
 
 //app.use("/api", apiRoutes); //siempre con prefijo api
-app.use("/offers", offerRoutes); //Rutas ofertas de trabajo
+app.use("/offers", offerRoutes);
 app.use("/users", userRoutes); //Rutas de usuarios
 app.use("/admin", adminRoutes); //Rutas de admin
 app.use("/favorites", favoriteRoutes); //Ruta de ofertas favoritas
