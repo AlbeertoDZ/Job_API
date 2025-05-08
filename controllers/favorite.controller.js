@@ -50,13 +50,13 @@ const addFavorite = async (req, res) => {
 
 // Eliminar favorito
 const deleteFavorite = async (req, res) => {
-  const id = req.params.id;
+  const id_favorite = req.params.id;
   try {
-    const deletedCount = await removeFavorite(id);
+    const deletedCount = await Favorites.removeFavorite(id_favorite);
     if (deletedCount === 0) {
       return res.status(404).send("Favorito no encontrado");
     }
-    res.status(200).send("Favorito eliminado! Has borrado: " + id);
+    res.status(200).send("Favorito eliminado! Has borrado: " + id_favorite);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Error al intentar borrar el favorito" });

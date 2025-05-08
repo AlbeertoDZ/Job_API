@@ -34,10 +34,10 @@ async function createFavorite(id_user, id_favorite) {
 }
 
 // Eliminar favorito
-const removeFavorite = async (id) => {
+const removeFavorite = async (id_favorite) => {
   const client = await pool.connect();
   try {
-    const result = await client.query(queries.deleteFavorite, [id]);
+    const result = await client.query(queries.deleteFavorite, [id_favorite]);
     return result.rowCount;
   } catch (err) {
     throw err;
