@@ -206,13 +206,13 @@ const changePassword = async (req, res) => {
     // 1) Verificamos el JWT
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
     // 2) Comprobamos que existe el usuario
-    const { rows } = await pool.query(queries.recoverPassword, [email]);
+    const { rows } = await db.query(queries.recoverPassword, [email]);
     if (rows.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
     // 3) Hasheamos y actualizamos
     const hashed = await bcrypt.hash(newPassword, 10);
-    const result = await pool.query(queries.changePassword, [hashed, email]);
+    const result = await db.query(queries.changePassword, [hashed, email]);
     if (result.rowCount === 0) {
       return res
         .status(404)

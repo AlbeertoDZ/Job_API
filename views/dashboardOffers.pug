@@ -10,30 +10,30 @@ html
 
         .form-card
             h2 Crear nueva oferta
-            form(method="POST", action="/api/ads", class="offer-form")
+            form(class="offer-form" id="offer-form")
                 label(for="title") Título de la oferta:
-                input(type="text", name="title", required)
+                input(type="text", id="title", name="title", required)
 
                 label(for="company") Empresa:
-                input(type="text", name="company", required)
+                input(type="text", id="company", name="company", required)
 
                 label(for="description") Descripción del puesto: 
-                input(type="text", name="description", required)
+                input(type="text", id="description", name="description", required)
 
                 label(for="city") Ciudad: 
-                input(type="text", name="city", required)
+                input(type="text", id="city", name="city", required)
 
                 label(for="salary") Salario: 
-                input(type="number", name="salary", required)
+                input(type="number", id="salary", name="salary", required)
+
+                label(for="url") URL: 
+                input(type="text", id="url", name="url", required)
 
                 button.button(type="submit", class="button") Crear oferta
-//-
-        h2 Ofertas publicadas
-        .offers-card
-            each offer in offers
-                .offer-card
-                    h2= offer.title
-                    p Empresa: #{offer.company}
-                    p Ciudad: #{offer.city}
-                    p Salario: #{offer.salary}
-    include ./footer
+
+                div#message
+
+  include ./footer
+  script(src="/js/script.js")
+
+   
