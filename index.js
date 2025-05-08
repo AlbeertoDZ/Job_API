@@ -1,7 +1,11 @@
 const express = require("express");
 const app = express();
 
-require('dotenv').config();// Cargar variables de entorno
+// Importar Swagger UI
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
+require("dotenv").config(); // Cargar variables de entorno
 
 const connectDB = require("./config/db_mongo"); // Conexión a MongoDB Atlas
 //Conectar a la base de datos de MongoDB Atlas
@@ -14,15 +18,17 @@ connectDB().then(() => {
 const scrapeOffers = require("./utils/scraper");
 const saveOffersToDB = require("./utils/saveOffers");
 
-
 //const apiRoutes = require("./routes/api.routes");
 const userRoutes = require("./routes/users.routes");
 const adminRoutes = require("./routes/admin.routes");
 const offerRoutes = require("./routes/offer.routes");
-const favoriteRoutes = require("./routes/favorite.routes")
+const favoriteRoutes = require("./routes/favorite.routes");
 
 //Middleware Morgan
 const morgan = require("./middlewares/morgan");
+
+// Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Logger
 app.use(express.static("public")); // Middleware para servir archivos estáticos de front
@@ -30,7 +36,7 @@ app.use(express.static("public")); // Middleware para servir archivos estáticos
 // Para poder leer JSON en las peticiones
 app.use(express.json());
 
-app.use("/", userRoutes)
+app.use("/", userRoutes);
 //app.use("/api", apiRoutes); //siempre con prefijo api
 app.use("/offers", offerRoutes); //Rutas ofertas de trabajo
 app.use("/users", userRoutes); //Rutas de usuarios
@@ -42,7 +48,7 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 //ejecutar scraping
-const Offer = require('./models/offer.model');
+const Offer = require("./models/offer.model");
 
 // Ejecutar scraping solo si no hay ofertas en la base de datos
 async function ejecutarScraping() {
@@ -54,7 +60,9 @@ async function ejecutarScraping() {
       console.log("Intentando insertar", jobOffers.length, "ofertas");
       await saveOffersToDB(jobOffers);
     } else {
-      console.log(`Ya hay ${count} ofertas en MongoDB. No se ejecuta scraping.`);
+      console.log(
+        `Ya hay ${count} ofertas en MongoDB. No se ejecuta scraping.`
+      );
     }
   } catch (error) {
     console.error("Error durante el scraping:", error.message);
