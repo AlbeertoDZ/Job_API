@@ -87,8 +87,6 @@ const updateUser = async (req, res) => {
 };
 
 
-
-
 // [DELETE] /api/user - Eliminar usuario (solo admin)
 const deleteUserAdmin = async (req, res) => {
   const {email} = req.params; // {email}
@@ -226,7 +224,6 @@ const changePassword = async (req, res) => {
     return res.status(500).json({ message: "Error al cambiar la contraseña" });
   }
 };
-
 
 module.exports = {
   getProfileView,

@@ -16,10 +16,14 @@ html(lang="es")
                 a.button(href="/login") Iniciar sesión
                 a.button(href="/signup") Regístrate
 
-            form(method="get", action="/api/search")
-                input.searcher(type="text", placeholder="Buscar empleo...", required)
-                button.button(type="submit") Buscar
+
+
+            input.searcher(type="text", placeholder="Buscar empleo...", required)
+            button.button(type="submit") Buscar
+
+            div#resultados
+
 
         include ./footer
+        script(src="/js/script.js")
 
-        script(src="./js/script.js")
