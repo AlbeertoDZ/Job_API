@@ -3,6 +3,7 @@ const User= require("../models/users.model"); // Modelo de usuario
 const bcrypt = require("bcrypt"); // Librería para encriptar contraseñas
 const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
 const pool = require('../config/db_pgsql');
+const Offer = require("../models/offer.model")
 
 //Controlador para la vista de profile
 const getProfileView = async (req, res) => {
@@ -86,8 +87,6 @@ const updateUser = async (req, res) => {
     }
 
 };
-
-
 
 
 // [DELETE] /api/user - Eliminar usuario (solo admin)
@@ -223,15 +222,14 @@ const changePassword = async (req, res) => {
   }
 };
 
-
 module.exports = {
-    getProfileView,
-    createUser,
-    updateUser,
-    deleteUserAdmin,
-    loginUsers,
-    recoverPassword,
-    changePassword,
-    getRecoverPasswordView,
-    getRestorePasswordView
+  getProfileView,
+  createUser,
+  updateUser,
+  deleteUserAdmin,
+  loginUsers,
+  recoverPassword,
+  changePassword,
+  getRecoverPasswordView,
+  getRestorePasswordView
 };
