@@ -3,16 +3,16 @@ const Offer = require('../models/offer.model'); // Modelo de oferta
 const bcrypt = require("bcrypt"); // Librería para encriptar contraseñas
 const jwt = require("jsonwebtoken"); // Librería para crear tokens JWT
 
-// [GET] /api/search - Buscar ofertas de trabajo
+// [GET] /offer/search - Buscar ofertas de trabajo
 const searchOffers = async (req, res) => {
-    const job = req.query.job;
-    const city = req.query.city;
-    const salary = req.query.salary;
-    if (!job || !city || !salary) {
-      return res.status(400).json({
-        message: 'Debes enviar los tres parámetros: job, city y salary',
-      });
-    }
+    const job = req.query.job || "";
+    const city = req.query.city || "";
+    const salary = req.query.salary || "";
+    // if (!job || !city || !salary) {
+    //   return res.status(400).json({
+    //     message: 'Debes enviar los tres parámetros: job, city y salary',
+    //   });
+    // }
     try {
       const resultados = await Offer.find({
         description: { $regex: job, $options: 'i' }, //regex para encontrar coincidencias en el texto
