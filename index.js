@@ -25,6 +25,7 @@ app.use(express.static("public")); // Middleware para servir archivos estáticos
 // Para poder leer JSON en las peticiones
 app.use(express.json());
 
+app.use("/", userRoutes)
 //app.use("/api", apiRoutes); //siempre con prefijo api
 app.use("/offers", offerRoutes); //Rutas ofertas de trabajo
 app.use("/users", userRoutes); //Rutas de usuarios

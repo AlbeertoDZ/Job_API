@@ -79,7 +79,8 @@ nav.menu {
     margin: 0;
     display: none;
     flex-direction: column;
-    background-color: var(--background-color);
+    background-color: var(--footer-color);
+    border-radius: 10px;
 }
   
 .menu-items li {
@@ -96,7 +97,7 @@ nav.menu {
 }
   
 .menu-items a:hover {
-    background-color: var(--footer-color);
+    background-color: white;
     border-radius: 10px;
 }
 
