@@ -1,3 +1,4 @@
+//Ruta: http://localhost:3000/offers/alloffers
 
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("resultados");
@@ -34,7 +35,7 @@ document.getElementById("offer-form").addEventListener("submit", async (event) =
   const city = event.target.city.value;
   const salary = event.target.salary.value;
   const url = event.target.url.value;
-  
+
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -62,4 +63,3 @@ document.getElementById("offer-form").addEventListener("submit", async (event) =
 
 
 })
-
