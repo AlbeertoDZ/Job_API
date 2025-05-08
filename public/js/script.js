@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <p><strong>Salario:</strong> ${offer.salary} €</p>
         <a href="${offer.url}" target="_blank" class="button">Ver oferta</a>
       </div>
-    `).join();
+    `).join("");
 
     container.innerHTML = tarjetaOfertas;
 
