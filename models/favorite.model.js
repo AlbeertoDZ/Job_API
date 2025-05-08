@@ -18,10 +18,15 @@ async function getFavorites(userId) {
 }
 
 // Crear favorito
-async function createFavorite(userId, adId) {
+async function createFavorite(id_user, id_favorite) {
+  console.log(id_user, id_favorite);
+
   const client = await pool.connect();
   try {
-    const data = await client.query(queries.createFavorite, [userId, adId]);
+    const data = await client.query(queries.createFavorite, [
+      id_user,
+      id_favorite,
+    ]);
     return data.rows[0];
   } finally {
     client.release();
@@ -41,9 +46,8 @@ const removeFavorite = async (id) => {
   }
 };
 
-
 module.exports = {
-    getFavorites,
+  getFavorites,
   createFavorite,
-  removeFavorite
+  removeFavorite,
 };
