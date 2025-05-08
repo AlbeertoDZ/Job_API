@@ -4,29 +4,28 @@ html
     link(rel="stylesheet", href="/css/style.css")
   body
     include ./headerAdmin
-
     main
         h1 Gestor de ofertas
-
         .form-card
             h2 Crear nueva oferta
             form(class="offer-form" id="offer-form")
+
                 label(for="title") Título de la oferta:
                 input(type="text", id="title", name="title", required)
 
                 label(for="company") Empresa:
                 input(type="text", id="company", name="company", required)
 
-                label(for="description") Descripción del puesto: 
+                label(for="description") Descripción del puesto:
                 input(type="text", id="description", name="description", required)
 
-                label(for="city") Ciudad: 
+                label(for="city") Ciudad:
                 input(type="text", id="city", name="city", required)
 
-                label(for="salary") Salario: 
+                label(for="salary") Salario:
                 input(type="number", id="salary", name="salary", required)
 
-                label(for="url") URL: 
+                label(for="url") URL:
                 input(type="text", id="url", name="url", required)
 
                 button.button(type="submit", class="button") Crear oferta
@@ -35,5 +34,3 @@ html
 
   include ./footer
   script(src="/js/script.js")
-
-   

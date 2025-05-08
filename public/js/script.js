@@ -1,5 +1,3 @@
-//Ruta: http://localhost:3000/offers/alloffers
-
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("resultados");
 
@@ -28,18 +26,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 document.getElementById("offer-form").addEventListener("submit", async (event) => {
   event.preventDefault();
-
   const title = event.target.title.value;
   const company = event.target.company.value;
   const description = event.target.description.value;
   const city = event.target.city.value;
   const salary = event.target.salary.value;
   const url = event.target.url.value;
-
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-
-
   await fetch('/offers/ads', {
     method: "POST",
     body: JSON.stringify(
@@ -58,8 +52,5 @@ document.getElementById("offer-form").addEventListener("submit", async (event) =
     .then(data => {
       document.getElementById("message").innerHTML = "Oferta guardada";
       console.log(data)
-
     })
-
-
 })
