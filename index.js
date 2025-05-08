@@ -5,9 +5,14 @@ require('dotenv').config();// Cargar variables de entorno
 
 const connectDB = require("./config/db_mongo"); // Conexión a MongoDB Atlas
 //Conectar a la base de datos de MongoDB Atlas
-connectDB(); 
+connectDB().then(() => {
+  console.log("Index: MongoDB Atlas conectado correctamente");
+  ejecutarScraping();
+});
 
 //const mongoose = require("mongoose");
+const scrapeOffers = require("./utils/scraper");
+const saveOffersToDB = require("./utils/saveOffers");
 
 
 //const apiRoutes = require("./routes/api.routes");
@@ -35,6 +40,26 @@ app.use("/favorites", favoriteRoutes); //Ruta de ofertas favoritas
 // Configuración de vistas PUG - Motor de plantillas
 app.set("view engine", "pug");
 app.set("views", "./views");
+
+//ejecutar scraping
+const Offer = require('./models/offer.model');
+
+// Ejecutar scraping solo si no hay ofertas en la base de datos
+async function ejecutarScraping() {
+  try {
+    const count = await Offer.countDocuments();
+    if (count === 0) {
+      console.log("Ejecutando scraping...");
+      const jobOffers = await scrapeOffers();
+      console.log("Intentando insertar", jobOffers.length, "ofertas");
+      await saveOffersToDB(jobOffers);
+    } else {
+      console.log(`Ya hay ${count} ofertas en MongoDB. No se ejecuta scraping.`);
+    }
+  } catch (error) {
+    console.error("Error durante el scraping:", error.message);
+  }
+}
 
 // Iniciar el servidor
 const PORT = 3000;

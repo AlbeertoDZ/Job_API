@@ -40,7 +40,7 @@ router.delete('/:email', authMiddleware, isAdminMiddleware, usersControllers.del
 
 
 //POST http://localhost:3000/api/login
-router.post("/login", usersControllers.loginUsers);
+router.post("/api/login", usersControllers.loginUsers);
 
 //Rutas para las vistas de recuperar y restaurar contraseña
 router.get("/recoverpassword", usersControllers.getRecoverPasswordView)
@@ -56,8 +56,8 @@ router.get("/restorepassword", usersControllers.changePassword);
 
 
 //POST http://localhost:3000/api/logout
-router.post("/logout", (req, res) => {
-    res.redirect('/login');
+router.post("/api/logout", (req, res) => {
+    res.status(200).json({ message: 'Sesión cerrada correctamente' });
   });
 
 

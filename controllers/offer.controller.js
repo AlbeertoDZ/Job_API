@@ -30,7 +30,7 @@ const searchOffers = async (req, res) => {
     }
   };
 
-//POST http://localhost:3000/api/ads
+//POST http://localhost:3000/api/ads/(..id..)
 const createOffer = async (req, res) => {
   const title = req.body.title;
   const company = req.body.company;
