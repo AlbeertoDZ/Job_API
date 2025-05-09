@@ -19,13 +19,16 @@ JobIn es una aplicación web que simula una plataforma de búsqueda de empleo, d
   - [Express.js](https://expressjs.com/)
 
 - **Bases de datos**:
+<p align="center"><img src="public/img/Postgresql_elephant.svg.png" alt="Logo de PostgreSQL" width="200">
+<p align="center"><img src="public/img/mongodb-logo.png" alt="Logo de MongoDB" width="200">
+
   - **PostgreSQL**:
   Utilizamos una base de datos relacional en la que guardamos dos tablas:
     - `persons`: Usuarios registrados (roles `user` y `admin`)  
     - `favoritos`: Ofertas de empleo guardadas por los usuarios
 
   - **MongoDB Atlas**:  
-    - Almacenamiento de ofertas de empleo capturadas por scraping y que luego renderizaremos en la web
+    - `Offers`: Almacenamiento de ofertas de empleo capturadas por scraping y que luego renderizaremos en la web
 
 - **Control de versiones**: [GitHub](https://github.com/)
 
@@ -57,6 +60,65 @@ El enfoque de diseño es **mobile first**, asegurando una experiencia óptima en
 - Salario
 - Enlace externo a la oferta original
 
+## Despliegue en Render
+
+👉🏻 https://job-api-f78b.onrender.com/
+
+<p align="center"><img src="public/img/apply-apply-gif.gif" alt="Gif apply job" width="500"></p>
+
+## 🩻 Estructura del proyecto
+
+```bash
+📁 JOB_API
+├── 📁 config
+│   ├── db_mongo
+│   └── db_pgsql   
+├── 📁 controllers
+│   ├── admin.controller
+│   ├── favorite.controller
+│   ├── offer.controller
+│   └── users.controller   
+├── 📁 middlewares
+│   ├── admin
+│   ├── authMiddleware
+│   ├── manage404
+│   ├── morgan
+│   └── roleMiddleware
+├── 📁 models
+│   ├── admin.model
+│   ├── favorite.model
+│   ├── offer.model
+│   └── users.model 
+├── 📁 node_modules
+├── 📁 public
+│   ├── css
+│   ├── img
+│   └── js
+├── 📁 queries
+│   ├── api.queries
+│   └── createTables
+├── 📁 routes
+│   ├── admin.routes
+│   ├── favorite.routes
+│   ├── offer.routes
+│   └── users.routes 
+├── 📁 services
+├── 📁 utils
+│   ├── saveOffers
+│   └── scraper
+├── 📁 views
+├── ⚙️.env
+├── ⛔ .gitignore
+├── index.js
+├── {} JOB_API.code-workspace
+├── 🔑 LICENSE
+├── {} package-lock.json
+├── {} package.json
+├── 🗄️ queries.sql
+├── ®️ README.md
+├── {} swagger.json
+```
+
 ## 📦 Instalación y ejecución
 
 ### Requisitos previos
@@ -70,3 +132,4 @@ El enfoque de diseño es **mobile first**, asegurando una experiencia óptima en
 ```bash
 git clone https://github.com/tu-usuario/jobin.git
 cd jobin
+```
