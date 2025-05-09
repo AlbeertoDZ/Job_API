@@ -1,0 +1,26 @@
+html
+   head
+      title="Signup"
+      link(rel="stylesheet", href="/css/style.css")
+   body
+    main.login-container
+        a(href="/")
+            img.img-logo(src="/img/logo-jobin.png", alt="Logo JobIn")
+
+        h1 Crear cuenta
+
+        form(action="/signup" method="POST")
+            label(for="nombre") Nombre
+            input#nombre(type="text" name="nombre" required placeholder="Tu nombre")
+
+            label(for="email") Email
+            input#email(type="email" name="email" required placeholder="Introduce tu email")
+
+            label(for="password") Contraseña
+            input#password(type="password" name="password" required placeholder="Crea una contraseña")
+
+            button.button(type="submit") Registrarse
+
+        a.forgot-password(href="/login") ¿Ya tienes cuenta? Inicia sesión
+
+    include ./footer

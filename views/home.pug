@@ -1,0 +1,26 @@
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="/css/style.css")
+        title Home 
+        
+    body
+        main
+            include ./headerHome
+            img(src="/img/logo-jobin.png", alt="Logo JobIn", class="img-logo")
+            h1 Bienvenido a JobIn
+
+            .buttons-container
+                a.button(href="/admin/dashboard") Publicar oferta
+                a.button(href="/login") Iniciar sesión
+                a.button(href="/signup") Regístrate
+
+
+            div#resultados
+
+
+        include ./footer
+        script(src="/js/script.js")
+

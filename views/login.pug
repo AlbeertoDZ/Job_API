@@ -1,0 +1,22 @@
+html
+   head
+      title="LogIn"
+      link(rel="stylesheet", href="/css/style.css")
+   body
+    main.login-container
+        a(href="/")
+            img(src="/img/logo-jobin.png", alt="Logo JobIn", class="img-logo")
+        h1 Iniciar sesión
+
+        form(action="/login" method="POST")
+            label(for="email") Email
+            input#email(type="email" name="email" required placeholder="Introduce tu email")
+
+            label(for="password") Contraseña
+            input#password(type="password" name="password" required placeholder="Introduce tu contraseña")
+
+            button.button(type="submit") Enter
+
+        a.forgot-password(href="/recoverpassword") ¿Has olvidado tu contraseña?
+
+    include ./footer
